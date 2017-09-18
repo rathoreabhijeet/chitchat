@@ -55,7 +55,7 @@ componentDidMount() {
 _renderItem(Userdata) {
   const { navigate } = this.props.navigation;
      return (      
-      <ListItem avatar Userdata={Userdata} onPress={() => navigate('Message',{  username: Userdata.name,Rid:Userdata._key,phone:Userdata.phone,url:Userdata.url })}>
+      <ListItem avatar Userdata={Userdata} style={{margin:3}} onPress={() => navigate('Message',{  username: Userdata.name,Rid:Userdata._key,phone:Userdata.phone,url:Userdata.url })}>
       <Left>
         <Thumbnail source={{ uri:Userdata.url  }} />
       </Left><Body>
