@@ -73,7 +73,8 @@ export default class SignInScreen extends React.Component {
                 // alert("Uploading");
                 // this.upload(source)
                 this.uploadImage(response.uri,response.fileName)
-                .then(url => {this.setState({avatarSource: url}) },alert('Upload Successfull!!! Press SignUP to continue '))
+                .then(url => {this.setState({avatarSource: url}) })
+                .then(alert('Upload Successfull!!! Press SignUP to continue '))
         .catch(error => console.log(error))
               }           
             });   }
@@ -208,7 +209,10 @@ export default class SignInScreen extends React.Component {
       <Container> 
          <Image source={ require('./pics/back4.jpg') }  style={{height:'100%',width:'100%'}}>       
       <Content>
-      <Form style={{height:'auto'}}>        
+      <Form style={{height:'auto'}}> 
+      <Button full>
+        <Icon name="camera"  onPress={() =>this.uploadPhoto()} >
+ <Text style={styles.button}>Select Photo</Text> </Icon></Button>        
       <TextInput placeholder="Name"  placeholderTextColor="white" transparent style={[styles.inputbox, this.state.namecss && styles.emptyBox]} maxLength = {15} returnKeyType="next"
            onChangeText={(name) => this.setState({ name })}  value={this.state.name}  />
        <TextInput placeholder="Age" placeholderTextColor="white" transparent style={[styles.inputbox, this.state.agecss && styles.emptyBox]} keyboardType='numeric' maxLength = {2} returnKeyType="next"
@@ -221,9 +225,7 @@ export default class SignInScreen extends React.Component {
            onChangeText={(password1) => this.setState({ password1 })} value={this.state.password1} />
        <TextInput placeholder="Confirm Password" placeholderTextColor="white" secureTextEntry transparent style={[styles.inputbox, this.state.password2css && styles.emptyBox]} 
            onChangeText={(password2) => this.setState({ password2 })} value={this.state.password2} />
-        <Button full>
-        <Icon name="camera"  onPress={() =>this.uploadPhoto()} >
- <Text style={styles.button}>Select Photo</Text> </Icon></Button>   
+         
       </Form>   
 
             <Button rounded bordered style={styles.button} onPress={() => this.signup(this.state.name,this.state.age,
