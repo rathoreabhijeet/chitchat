@@ -58,8 +58,7 @@ _renderItem(Userdata) {
       <Text>{Userdata.name}</Text></Body>
     </ListItem>
   );
-}
-  
+}  
   render() {
     return (
       <Container>
@@ -67,9 +66,8 @@ _renderItem(Userdata) {
         <Content>
         <ListView dataSource={this.state.dataSource}
 renderRow={this._renderItem.bind(this)} enableEmptySections={true} style={styles.listview}>                      
-          </ListView>         
-
-        </Content>
+          </ListView>        
+ </Content>
       </Container>
     );
   }
@@ -91,6 +89,5 @@ var styles = StyleSheet.create({
   listview: {
     flex: 1,
   },
-
 });
 

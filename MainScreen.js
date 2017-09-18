@@ -10,7 +10,6 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 import firebaseApp from './Firebase';
 
 
-
 export default class MainScreen extends React.Component {  
     static navigationOptions = {
       title: 'ChitChat', 
@@ -22,8 +21,7 @@ export default class MainScreen extends React.Component {
       firebaseApp.auth().signOut().then(function() {
        navigate('Home');
       }).catch(function(error) {
-        // An error happened.
-      });
+         });
     }
     catch (error) {
       console.log(error.toString())
@@ -55,8 +53,6 @@ export default class MainScreen extends React.Component {
     </Button> 
      </Right>
      </Header>
-    
-
             <ScrollableTabView
                style={{ borderColor: '#fff' }}
                tabBarUnderlineStyle={style = { backgroundColor: '#fff' }}

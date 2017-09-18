@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import {  AppRegistry, StyleSheet, Navigator, View,Image,document,TextInput,} from 'react-native';
-import { Container,Footer,Body,Title,Card, CardItem, Form, Item,Input, Label,Button, Text ,Header,
-   Content, FooterTab,Left, Right, Icon ,Div} from 'native-base';
+import {  AppRegistry, StyleSheet, Navigator, View,Image,TextInput,} from 'react-native';
+import { Container,Body, Form, Item,Input, Label,Button, Text ,Header,
+   Content,Left, Right, Icon} from 'native-base';
 import { StackNavigator,} from 'react-navigation';
 import SignInScreen from './SignInScreen';
 import MainScreen from './MainScreen';

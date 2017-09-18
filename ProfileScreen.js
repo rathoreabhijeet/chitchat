@@ -8,7 +8,6 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ParallaxView from 'react-native-parallax-view';
 
-
 export default class ProfileScreen extends React.Component {
     static navigationOptions = ({ navigation }) => ({
      // title: `${navigation.state.params.user}`,
@@ -50,7 +49,6 @@ export default class ProfileScreen extends React.Component {
           chat and calls are secured with end to end Encryption. Tap to verify</Text>
         </View>
         <Icon name="lock" color="#075e54" size={23} style={{ padding: 5 }} />
-
       </View>
     </View>
     <View style={styles.card}>
@@ -75,7 +73,6 @@ export default class ProfileScreen extends React.Component {
   );
 }
 }
-
 const styles = StyleSheet.create({
   header: {
     height: 60,

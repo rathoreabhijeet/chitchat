@@ -16,9 +16,7 @@ import CallScreen from './CallScreen';
 class TestScreen extends React.Component {  
  static navigationOptions = {
    title: 'WELCOME', 
- };
-
- 
+ }; 
  constructor(props) {
   super(props);
   this.state = {     
@@ -38,11 +36,7 @@ userlogin()
       navigate('Home');
     }
   });
-}
-
-
-
-  
+}  
  render() {
    const { navigate } = this.props.navigation;
    const date = new Date();
@@ -61,8 +55,6 @@ userlogin()
    );
  }
 }
-
-
 var styles = StyleSheet.create({
  button :{
    fontWeight:'bold',
@@ -72,7 +64,6 @@ alignSelf:'center',
 justifyContent:'center',
 borderColor:'white',
  },
-
 });
 
 

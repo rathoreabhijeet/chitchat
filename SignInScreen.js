@@ -75,9 +75,7 @@ export default class SignInScreen extends React.Component {
                 this.uploadImage(response.uri,response.fileName)
                 .then(url => {this.setState({avatarSource: url}) },alert('Upload Successfull!!! Press SignUP to continue '))
         .catch(error => console.log(error))
-              }
-              // alert(this.state.avatarSource);
-              
+              }           
             });   }
   uploadImage(uri,name, mime = 'application/octet-stream') {
               return new Promise((resolve, reject) => {
@@ -199,16 +197,11 @@ export default class SignInScreen extends React.Component {
            else 
              {
                alert('Invalid Phone number');
-             }
-       
+             }       
     }
     else
     { alert('Password do not match'); }
-  }        
- 
-               
-
-  
+  }      
   render() {
     const { navigate } = this.props.navigation;
     return (

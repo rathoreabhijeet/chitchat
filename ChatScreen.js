@@ -5,7 +5,6 @@ import {  AppRegistry, StyleSheet,ListView} from 'react-native';
 import firebaseApp from './Firebase';
 import MessageScreen from './MessageScreen';
 
-
 export default class ChatScreen extends Component {
   static navigationOptions = {
     title: 'Chats',
@@ -67,13 +66,11 @@ _renderItem(Userdata) {
   
   render() {
     return (
-      <Container>
-  
+      <Container>  
         <Content>
         <ListView dataSource={this.state.dataSource}
 renderRow={this._renderItem.bind(this)} enableEmptySections={true} style={styles.listview}>                      
-          </ListView>         
-
+          </ListView>  
         </Content>
       </Container>
     );
@@ -85,9 +82,7 @@ var styles = StyleSheet.create({
     fontWeight: 'bold',fontFamily: "vincHand",
     fontSize: 30,
     textAlign: "center",
-    marginTop:25,
-    
-  },
- 
+    marginTop:25,    
+  }, 
 });
 

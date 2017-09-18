@@ -1,4 +1,5 @@
 import * as firebase from "firebase";
+
 var config = {
     apiKey: "AIzaSyAixtgVVJgPxFhPvC3OcVAc7Mff4UNxE9Q",
     authDomain: "chitchat-f147c.firebaseapp.com",

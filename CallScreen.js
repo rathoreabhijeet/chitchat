@@ -39,7 +39,7 @@ return (
       </TouchableOpacity>
     </Image>
     <View style={styles.bottomBar}>
-      <Icon name="volume-up" color="#c3c3c3" size={30} />
+      <Icon name="volume-up" color="#c3c3c3" size={30}/>
       <Icon name="chat" color="#c3c3c3" size={30} />
       <Icon name="mic-off" color="#c3c3c3" size={30} />
     </View>
