@@ -1,6 +1,6 @@
 import React from 'react';
-import { Container, Header,Footer,FooterTab,Body,Title, Content,Card, CardItem, Form, Item, Input, Label,Button,
-  Icon, Text,View,Div,Left,Right,ListItem ,Thumbnail} from 'native-base';
+import { Container, Header,Footer,FooterTab,Body,Title,Content,Card,CardItem,Form,Item,Input,Label,Button,
+Icon,Text,View,Div,Left,Right,ListItem ,Thumbnail,} from 'native-base';
 import {  AppRegistry, StyleSheet,TouchableOpacity,ListView} from 'react-native';
 import firebaseApp from './Firebase';
 import InvertibleScrollView from 'react-native-invertible-scroll-view';
@@ -40,7 +40,7 @@ export default class MessageScreen extends React.Component {
             keyDb=Ukey+Rkey;
             this.state.keyDb=keyDb;
         }
-    this.chatRef =firebaseApp.database().ref().child('ChatMessages/'+keyDb+'/messages/');
+    this.chatRef =firebaseApp.database().ref().child('ChatMessages/'+keyDb+'/');
   }
   sendMessage(message,date,Ukey,Rkey) { 
     this.setState({
@@ -58,10 +58,12 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
     }
     if(message != '')
     {
-    firebaseApp.database().ref('ChatMessages/'+keyDb+'/messages/').push({
+    firebaseApp.database().ref('ChatMessages/'+keyDb+'/').push({
       text:message,
       date:date,
       senderId:Ukey,
+      receiverId:Rkey,
+      read:false,
     })
       }  
   }
@@ -135,9 +137,11 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
          <Content >
            <Header style={styles.header}>          
            <Left>
-<Thumbnail source={{ uri: user.url }} />
+           <TouchableOpacity onPress={() =>navigate('profile',{name:user.username,phone:user.phone,url:user.url})}>
+<Thumbnail source={{ uri: user.url }} /></TouchableOpacity>
 </Left>
 <TouchableOpacity onPress={() =>navigate('profile',{name:user.username,phone:user.phone,url:user.url})}>
+
 <Body><Text style={styles.header}>{user.username}</Text></Body>
 </TouchableOpacity>
         <Right>
@@ -178,7 +182,6 @@ var styles = StyleSheet.create({
       borderRadius: 4,
       borderWidth: 0,
       borderColor: 'white',
-     
     },
     header:{
 backgroundColor:"#075e54",
@@ -198,7 +201,7 @@ color:"#fff",
       margin: 5,
     },
     msgBlock: {
-      width: 'auto',
+     maxWidth: '80%',
       borderRadius: 5,
       backgroundColor: '#ffffff',
       padding: 10,
@@ -220,7 +223,7 @@ color:"#fff",
         alignSelf: 'flex-end',
       },
       rightBlock: {
-        width:'auto',
+        maxWidth: '80%',
         borderRadius: 5,
         backgroundColor: '#97c163',
         padding: 10,

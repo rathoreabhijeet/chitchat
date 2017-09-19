@@ -1,8 +1,7 @@
 import React from 'react';
 import {
   Container, Header, Footer, Body, Title, Content, Card, CardItem, Form, Item, Label,
-  Button, Icon, Text
-} from 'native-base';
+  Button, Icon, Text} from 'native-base';
 import { StyleSheet, TextInput, Image} from 'react-native';
 import { StackNavigator, } from 'react-navigation';
 import HomeScreen from './Home';

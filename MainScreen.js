@@ -9,7 +9,6 @@ import ContactScreen from './ContactScreen';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import firebaseApp from './Firebase';
 
-
 export default class MainScreen extends React.Component {  
     static navigationOptions = {
       title: 'ChitChat', 
@@ -45,6 +44,9 @@ export default class MainScreen extends React.Component {
        <Text style={styles.header}>ChitChat</Text>
      </Left> 
  <Right>
+ <Button transparent  onPress={() =>navigate('uprofile')}>
+    <Icon name="people"/> 
+    </Button>
      <Button transparent>
     <Icon name="search"/> 
     </Button>
