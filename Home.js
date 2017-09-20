@@ -2,16 +2,24 @@ import React, { Component } from 'react';
 import {  AppRegistry, StyleSheet, Navigator, View,Image,TextInput,} from 'react-native';
 import { Container,Body, Form, Item,Input, Label,Button, Text ,Header,
    Content,Left, Right, Icon} from 'native-base';
-import { StackNavigator,} from 'react-navigation';
-import SignInScreen from './SignInScreen';
-import MainScreen from './MainScreen';
-import ChatScreen from './ChatScreen';
-import firebaseApp from './Firebase';
+   import { StackNavigator,} from 'react-navigation';
+  // import HomeScreen from './Home';
+   import MainScreen from './MainScreen';
+   import SignInScreen from './SignInScreen';
+   import ChatScreen from './ChatScreen';
+   import MessageScreen from './MessageScreen';
+   import ProfileScreen from './ProfileScreen';
+   import UserProfileScreen from './UserProfileScreen';
+   import firebaseApp from './Firebase';
+   import CallScreen from './CallScreen';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     title: 'HOME',
+    header:null,
   };
+
+ 
   async Login(email, password) {
     
     const { navigate } = this.props.navigation; 
@@ -58,7 +66,7 @@ export default class HomeScreen extends React.Component {
     const { navigate } = this.props.navigation;
     return (
       <Container>
-        <Image source={ require('./pics/back4.jpg') }  style={{height:'100%',width:'100%'}}>
+        <Image source={ require('./pics/back4.jpg') }  style={{height:'100%',width:'100%',}}>
       <Content>
      
         <Text></Text>
@@ -76,13 +84,13 @@ export default class HomeScreen extends React.Component {
         </Button>
         <Text></Text>
         <View >
-        <Text style={styles.view}>If Not Registered?</Text>
-          <Text style={styles.view}> Then Please Click on Sign In  </Text>
+        <Text  style={styles.view}>If Not Registered?</Text>
+          <Text style={styles.view}> Then Please Click on Sign up  </Text>
           </View >
           <Button  rounded bordered onPress={() =>
             navigate('SignIn')}  style={styles.button}>
             <Text style={styles.text}>
-              SIGN IN 
+              SIGN UP 
             </Text>
           </Button>
      
@@ -130,14 +138,5 @@ color:'white',
    justifyContent:'center',
    borderColor:'white',
    fontSize:20,
-  }
+  },
 });
-
-
-const ChitChat = StackNavigator({
-  Home: { screen: HomeScreen },
-  SignIn: { screen: SignInScreen },
-  Chats: {screen: ChatScreen},
-  Main :{screen : MainScreen}
-});
-//AppRegistry.registerComponent('ChitChat', () => ChitChat);

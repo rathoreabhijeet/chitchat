@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, StyleSheet,} from 'react-native';
-import {Right,Left} from 'native-base';
+import {Right,Left,Spinner} from 'native-base';
 import ParallaxView from 'react-native-parallax-view';
 import RNFetchBlob from 'react-native-fetch-blob';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -16,14 +16,17 @@ export default class UserProfileScreen extends React.Component {
      // title: `${navigation.state.params.user}`,
     header:null,
     });
+   
     constructor(props) {
       super(props);
       this.state = {
-      avatarSource:'https://firebasestorage.googleapis.com/v0/b/chitchat-f147c.appspot.com/o/images%2Fdefault.png?alt=media&token=2c799112-82ac-4089-9ecd-66734f0e79fd',
+      avatarSource:'No image',
         errors: [],
       }
     }
+ 
     uploadPhoto(userId){
+      var pic;
       var options = {
         title: 'Select Avatar',
         // customButtons: [
@@ -60,10 +63,12 @@ export default class UserProfileScreen extends React.Component {
                   // alert("Uploading");
                   // this.upload(source)
                   this.uploadImage(response.uri,response.fileName)
-                  .then(url => {this.setState({avatarSource: url}) })
-                  .then(firebaseApp.database().ref('user/'+userId+'/'+ImageUrl).set({ImageURL:this.state.avatarSource}))
+                  .then(url => {this.setState({avatarSource: url}) },
+setTimeout(() => firebaseApp.database().ref('user/'+userId).update({ ImageURL: this.state.avatarSource }), 9000))                
+         
+                
           .catch(error => console.log(error))
-                }           
+                }          
               });   }
     uploadImage(uri,name, mime = 'application/octet-stream') {
                 return new Promise((resolve, reject) => {
@@ -114,13 +119,12 @@ export default class UserProfileScreen extends React.Component {
     windowHeight={400}
     header={(
       <View>
-      
-        {/* <TouchableOpacity style={styles.header} onPress={() => this.uploadPhoto(userId)}>
-          <Icon
-            name="camera" color="#fff" size={23}
-            style={{ paddingLeft: 10 }}
+      {/* <Spinner color='red' /> */}
+        <TouchableOpacity style={styles.header} onPress={() => this.uploadPhoto(userId)}>
+          <Icon name="camera" color="#075e54" size={33}
+            style={{ paddingLeft: 10}}
           />
-        </TouchableOpacity> */}
+        </TouchableOpacity>
         <Text style={styles.title}>{name}</Text>        
       </View>
     )}
@@ -146,7 +150,7 @@ export default class UserProfileScreen extends React.Component {
     <View style={styles.card}>
       <View style={styles.row}>
         <Text style={styles.green}>Status and Phone</Text>
-        <Text style={styles.text}>Good morning</Text>
+        <Text style={styles.text}>Good morning !!!!!!!! </Text>
         <Text style={styles.subText}>{date.substring(0,15)}</Text>
       </View>
       <View style={styles.number}>
@@ -169,7 +173,7 @@ const styles = StyleSheet.create({
   header: {
     height: 60,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'center',
   },
   title: {

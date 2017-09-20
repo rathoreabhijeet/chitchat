@@ -19,6 +19,7 @@ window.Blob = Blob
 export default class SignInScreen extends React.Component {
   static navigationOptions = {
     title: 'SIGN IN',
+    header:null,
   };
 
      
@@ -209,9 +210,9 @@ export default class SignInScreen extends React.Component {
          <Image source={ require('./pics/back4.jpg') }  style={{height:'100%',width:'100%'}}>       
       <Content>
       <Form style={{height:'auto'}}> 
-      <Button full>
+      {/* <Button full>
         <Icon name="camera"  onPress={() =>this.uploadPhoto()} >
- <Text style={styles.button}>Select Photo</Text> </Icon></Button>        
+ <Text style={styles.button}>Select Photo</Text> </Icon></Button>         */}
       <TextInput placeholder="Name"  placeholderTextColor="white" transparent style={[styles.inputbox, this.state.namecss && styles.emptyBox]} maxLength = {15} returnKeyType="next"
            onChangeText={(name) => this.setState({ name })}  value={this.state.name}  />
        <TextInput placeholder="Age" placeholderTextColor="white" transparent style={[styles.inputbox, this.state.agecss && styles.emptyBox]} keyboardType='numeric' maxLength = {2} returnKeyType="next"
