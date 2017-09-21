@@ -10,7 +10,6 @@ import ParallaxView from 'react-native-parallax-view';
 
 export default class ProfileScreen extends React.Component {
     static navigationOptions = ({ navigation }) => ({
-     // title: `${navigation.state.params.user}`,
     header:null,
     });
     render()
@@ -23,12 +22,12 @@ export default class ProfileScreen extends React.Component {
     windowHeight={400}
     header={(
       <View>
-        <TouchableOpacity style={styles.header} onPress={() => alert('back')}>
+        {/* <TouchableOpacity style={styles.header} onPress={() => alert('back')}>
           <Icon
             name="arrow-back" color="#fff" size={23}
             style={{ paddingLeft: 10 }}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <Text style={styles.title}>{user.name}</Text>
       </View>
     )}
@@ -63,9 +62,9 @@ export default class ProfileScreen extends React.Component {
           <Text style={styles.subText}>Mobile</Text>
         </View>
         <View style={{ flexDirection: 'row' }}>
-          <Icon name="chat" color="#075e54" size={23} style={{ padding: 5 }} />
-          <Icon name="call" color="#075e54" size={23} style={{ padding: 5 }} />
-          <Icon name="videocam" color="#075e54" size={23} style={{ padding: 5 }} />
+          <Icon name="chat" color="#075e54" size={23} style={{ padding: 5 }}   onPress={() =>navigate('Main')}/>
+          <Icon name="call" color="#075e54" size={23} style={{ padding: 5 }}  onPress={() =>navigate('call')}/>
+          <Icon name="videocam" color="#075e54" size={23} style={{ padding: 5 }}  onPress={() =>navigate('call')}/>
         </View>
       </View>
     </View>

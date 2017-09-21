@@ -20,7 +20,7 @@ export default class UserProfileScreen extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-      avatarSource:'No image',
+      avatarSource:'https://firebasestorage.googleapis.com/v0/b/chitchat-f147c.appspot.com/o/images%2Fdefault.png?alt=media&token=2c799112-82ac-4089-9ecd-66734f0e79fd',
         errors: [],
       }
     }

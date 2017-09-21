@@ -3,7 +3,6 @@ import {  AppRegistry, StyleSheet, Navigator, View,Image,TextInput,} from 'react
 import { Container,Body, Form, Item,Input, Label,Button, Text ,Header,
    Content,Left, Right, Icon} from 'native-base';
    import { StackNavigator,} from 'react-navigation';
-  // import HomeScreen from './Home';
    import MainScreen from './MainScreen';
    import SignInScreen from './SignInScreen';
    import ChatScreen from './ChatScreen';

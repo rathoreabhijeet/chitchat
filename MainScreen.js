@@ -18,9 +18,11 @@ export default class MainScreen extends React.Component {
       const { navigate } = this.props.navigation; 
        try { 
       firebaseApp.auth().signOut().then(function() {
-       navigate('Test');
+      // navigate('Test');
+    
       }).catch(function(error) {
          });
+        
     }
     catch (error) {
       console.log(error.toString())
@@ -37,12 +39,13 @@ export default class MainScreen extends React.Component {
 
     render() {
         const { navigate } = this.props.navigation;
+        const {goBack} = this.props.navigation;
         return (     
          <Container>        
      <Header style={styles.header}>
        <Left>
        <Text style={styles.header}>ChitChat</Text>
-     </Left> 
+     </Left>
  <Right>
  <Button transparent  onPress={() =>navigate('uprofile')}>
     <Icon name="people"/> 
