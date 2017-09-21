@@ -64,10 +64,11 @@ export default class HomeScreen extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <Container>
-        <Image source={ require('./pics/back4.jpg') }  style={{height:'100%',width:'100%',}}>
+      <Container style={{ backgroundColor:'#075e54'}}>
+ <Image source={ require('./pics/back.png') } /> 
       <Content>
-     
+      
+      {/* <Image source={{uri :'https://firebasestorage.googleapis.com/v0/b/chitchat-f147c.appspot.com/o/back.png?alt=media&token=05cc9bbe-4417-42ed-af91-dbd53cd739f9'}}/> */}
         <Text></Text>
         <Form>
         <TextInput placeholder="Email" placeholderTextColor="white" keyboardType="email-address"
@@ -94,7 +95,7 @@ export default class HomeScreen extends React.Component {
           </Button>
      
         </Content>
-        </Image>
+        {/* </Image> */}
       </Container>
     );
   }

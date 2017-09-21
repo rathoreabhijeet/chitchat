@@ -206,8 +206,8 @@ export default class SignInScreen extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <Container> 
-         <Image source={ require('./pics/back4.jpg') }  style={{height:'100%',width:'100%'}}>       
+      <Container style={{ backgroundColor:'#075e54'}}>
+       <Image source={ require('./pics/back.png') } style={{height:217}} />    
       <Content>
       <Form style={{height:'auto'}}> 
       {/* <Button full>
@@ -235,7 +235,7 @@ export default class SignInScreen extends React.Component {
           </Text>
         </Button>   
         </Content>
-        </Image>
+        {/* </Image> */}
       </Container>
     );
   }
