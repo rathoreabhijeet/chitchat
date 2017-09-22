@@ -37,15 +37,14 @@ componentDidMount() {
  render() {
    const { navigate } = this.props.navigation;
    return (
-   <Container style={styles.Container}> 
-    <Image source={{ uri :'https://firebasestorage.googleapis.com/v0/b/chitchat-f147c.appspot.com/o/chitchat2.jpg?alt=media&token=435c9d13-9fad-44a3-8c04-f6b15d464b55'}} style={{height:450,width:360,}} >
-     </Image></Container>
+   <Container style={styles.Container}>
+   </Container>
    );
  }
 }
 var styles = StyleSheet.create({
  Container :{
- backgroundColor:'black'
+  alignItems:'center'
  },
 });
 const ChitChat = StackNavigator({

@@ -41,7 +41,9 @@ export default class MessageScreen extends React.Component {
             this.state.keyDb=keyDb;
         }
     this.chatRef =firebaseApp.database().ref().child('ChatMessages/'+keyDb+'/');
-  }
+  }//constructor closed
+
+
   sendMessage(message,date,Ukey,Rkey) { 
     this.setState({
       message: ''
@@ -64,7 +66,44 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
       senderId:Ukey,
       receiverId:Rkey,
       read:false,
-    })
+    });
+
+   var userRef =firebaseApp.database().ref('user/'+Ukey).child('ChatWith');
+   
+   userRef.on('value', (snap) => {  
+    var userexist=0;  
+    snap.forEach((child) => {     
+      if (child.val().ID == Rkey)
+      {
+        userexist=1;
+      }     
+    });
+    if (userexist != 1)
+    {
+    firebaseApp.database().ref('user/'+Ukey).child('ChatWith').push({
+      ID:Rkey,
+     });
+    }
+  });
+
+  var ReciverRef =firebaseApp.database().ref('user/'+Rkey).child('ChatWith');
+  
+  ReciverRef.on('value', (snap) => {  
+   var userexist=0;  
+   snap.forEach((child) => {     
+     if (child.val().ID == Ukey)
+     {
+       userexist=1;
+     }     
+   });
+   if (userexist != 1)
+   {
+   firebaseApp.database().ref('user/'+Rkey).child('ChatWith').push({
+     ID:Ukey,
+    });
+   }
+ });
+  
       }  
   }
 

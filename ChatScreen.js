@@ -5,14 +5,12 @@ import {  AppRegistry, StyleSheet,ListView} from 'react-native';
 import firebaseApp from './Firebase';
 import MessageScreen from './MessageScreen';
 
+
 export default class ChatScreen extends Component {
+ 
   static navigationOptions = {
     title: 'Chats',
     header:null,
-    headerRight : <Button transparent>
-    <Icon name="search"/> 
-    <Icon name="people" />
-  </Button>
  };
  constructor(props) {
   super(props);
@@ -22,25 +20,39 @@ export default class ChatScreen extends Component {
       rowHasChanged: (row1, row2) => row1 !== row2,
     })
   }
+  var Ukey = firebaseApp.auth().currentUser.uid;
   this.userRef =firebaseApp.database().ref().child('user');
+  this.ChatwithRef =firebaseApp.database().ref('user/'+Ukey).child('ChatWith');
 }
 
-listenForItems(userRef) {
-  var userId = firebaseApp.auth().currentUser.uid;
+listenForItems(userRef,ChatwithRef) {
+
+  var chatwith=[]; 
+  ChatwithRef.on('value', (snap) => {   
+    snap.forEach((child) => { 
+      chatwith.push({
+        id:child.val().ID
+      });      
+    });
+  });   
+
   userRef.on('value', (snap) => {    
     var user = [];
     snap.forEach((child) => {
-      if (userId != child.val().UID)
+      for(let i in chatwith)
       {
-     user.push({
-      name: child.val().Name,
-      url: child.val().ImageURL,
-      phone:child.val().Phone_No,
-      uid:child.val().UID,
-      _key: child.key
+        if(chatwith[i].id == child.val().UID)
+        {
+          user.push({
+            name: child.val().Name,
+            url: child.val().ImageURL,
+            phone:child.val().Phone_No,
+            uid:child.val().UID,
+            _key: child.key     
+          });
+        }
+      }
      
-    });
-  }
     });
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(user.reverse())
@@ -49,7 +61,7 @@ listenForItems(userRef) {
 }
 
 componentDidMount() {
-  this.listenForItems(this.userRef);
+  this.listenForItems(this.userRef,this.ChatwithRef);
 }
 
 _renderItem(Userdata) {
