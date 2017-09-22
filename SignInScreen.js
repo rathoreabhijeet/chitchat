@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Container, Header, Footer, Body, Title, Content, Card, CardItem, Form, Item, Label,
   Button, Icon, Text} from 'native-base';
-import { StyleSheet, TextInput, Image} from 'react-native';
+import { StyleSheet, TextInput, Image,ScrollView,View} from 'react-native';
 import { StackNavigator, } from 'react-navigation';
 import HomeScreen from './Home';
 import MainScreen from './MainScreen';
@@ -206,13 +206,9 @@ export default class SignInScreen extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <Container style={{ backgroundColor:'#075e54'}}>
-       <Image source={ require('./pics/back.png') } style={{height:217}} />    
-      <Content>
-      <Form style={{height:'auto'}}> 
-      {/* <Button full>
-        <Icon name="camera"  onPress={() =>this.uploadPhoto()} >
- <Text style={styles.button}>Select Photo</Text> </Icon></Button>         */}
+      <Container style={{ backgroundColor:'#075e54'}}>        
+         <Content><ScrollView>
+       <Image source={ require('./pics/back.png') }  />       
       <TextInput placeholder="Name"  placeholderTextColor="white" transparent style={[styles.inputbox, this.state.namecss && styles.emptyBox]} maxLength = {15} returnKeyType="next"
            onChangeText={(name) => this.setState({ name })}  value={this.state.name}  />
        <TextInput placeholder="Age" placeholderTextColor="white" transparent style={[styles.inputbox, this.state.agecss && styles.emptyBox]} keyboardType='numeric' maxLength = {2} returnKeyType="next"
@@ -225,17 +221,15 @@ export default class SignInScreen extends React.Component {
            onChangeText={(password1) => this.setState({ password1 })} value={this.state.password1} />
        <TextInput placeholder="Confirm Password" placeholderTextColor="white" secureTextEntry transparent style={[styles.inputbox, this.state.password2css && styles.emptyBox]} 
            onChangeText={(password2) => this.setState({ password2 })} value={this.state.password2} />
-         
-      </Form>   
 
             <Button rounded bordered style={styles.button} onPress={() => this.signup(this.state.name,this.state.age,
                  this.state.phone,this.state.email,this.state.password1,this.state.password2,this.state.avatarSource)}>
           <Text style={styles.text}>
            SIGN UP
           </Text>
-        </Button>   
+        </Button>
+         </ScrollView>    
         </Content>
-        {/* </Image> */}
       </Container>
     );
   }

@@ -173,7 +173,7 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
     // var user=this.props.navigation.state.params;
     return (
       <Container style={styles.container} >
-         <Content >
+         
            <Header style={styles.header}>          
            <Left>
            <TouchableOpacity onPress={() =>navigate('profile',{name:user.username,phone:user.phone,url:user.url})}>
@@ -187,6 +187,7 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
           <Button style={{backgroundColor:"#075e54" }} onPress={() =>navigate('call',{name:user.username,url:user.url})}><Icon name="call"/>
           </Button></Right>
           </Header>
+          <Content >
          <ListView
               enableEmptySections
               noScroll

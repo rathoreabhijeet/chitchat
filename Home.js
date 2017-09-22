@@ -85,7 +85,7 @@ export default class HomeScreen extends React.Component {
         <Text></Text>
         <View >
         <Text  style={styles.view}>If Not Registered?</Text>
-          <Text style={styles.view}> Then Please Click on Sign up  </Text>
+          <Text style={styles.view}> Then Please Click on</Text>
           </View >
           <Button  rounded bordered onPress={() =>
             navigate('SignIn')}  style={styles.button}>
