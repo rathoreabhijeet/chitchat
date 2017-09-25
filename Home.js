@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {  AppRegistry, StyleSheet, Navigator, View,Image,TextInput,ScrollView} from 'react-native';
+import {  AppRegistry, StyleSheet, Navigator, View,Image,TextInput,ScrollView,ActivityIndicator} from 'react-native';
 import { Container,Body, Form, Item,Input, Label,Button, Text ,Header,
    Content,Left, Right, Icon} from 'native-base';
    import { StackNavigator,} from 'react-navigation';
@@ -17,50 +17,69 @@ export default class HomeScreen extends React.Component {
     title: 'HOME',
     header:null,
   };
-
- 
   async Login(email, password) {
-    
-    const { navigate } = this.props.navigation; 
-     try { 
-       firebaseApp.auth().signInWithEmailAndPassword(email, password)
-         .then((firebaseUser)=> {
-          //alert('login in');
-          navigate('Main');
-          this.setState({
-            email: '',
-            password: '',
-          }); 
-
-        }, (error)=>{
-          var errorCode = error.code;
-          var errorMessage = error.message;
-           if (errorCode === 'auth/wrong-password') {
-           alert('Wrong password!');
-           }
-          else  if (errorCode === 'auth/invalid-email') {
-             alert('Invalid Email!');
-           }
-           else  if (errorCode === 'auth/user-not-found') {
-             alert('User Not Found!');
-           }
-           else { 
-            alert(errorMessage);
-           }
-        })          
-        }
-         catch (error) {
-           console.log(error.toString())
-        }         
+      const { navigate } = this.props.navigation; 
+      // this.setState({animating: true});
+      // this.toggleLoader()
+    if (email =='' || password== '')
+    {
+      this.setState({hght:0,opac:0});
+alert('Enter Email and Password');
+    }
+    else {
+      try { 
+        this.setState({hght:80,
+          opac:1});
+         firebaseApp.auth().signInWithEmailAndPassword(email, password)
+           .then((firebaseUser)=> {
+            //alert('login in');
+            navigate('Main');
+            this.setState({
+              email: '',
+              password: '',
+              hght:0,opac:0
+            }); 
+  
+          }, (error)=>{
+            this.setState({hght:0,opac:0});
+            var errorCode = error.code;
+            var errorMessage = error.message;
+             if (errorCode === 'auth/wrong-password') {
+             alert('Wrong password!');
+             this.setState({hght:0,opac:0});
+             }
+            else  if (errorCode === 'auth/invalid-email') {
+               alert('Invalid Email!');
+               this.setState({hght:0,opac:0});
+             }
+             else  if (errorCode === 'auth/user-not-found') {
+               alert('User Not Found!');
+               this.setState({hght:0,opac:0});
+             }
+             else { 
+              alert(errorMessage);
+              this.setState({hght:0,opac:0});
+             }
+          })          
+          }
+           catch (error) {
+             console.log(error.toString())
+          }  
+    }
+            
     }    
   constructor() {
     super();
     this.state = {
       email: '',
       password: '',
+      animating:true,
       errors: [],
+      hght:0,
+      opac:0,
     }
   }
+
   render() {
     const { navigate } = this.props.navigation;
     return (
@@ -77,12 +96,19 @@ export default class HomeScreen extends React.Component {
         <TextInput placeholder="Password" secureTextEntry  placeholderTextColor="white" 
  onChangeText={(password) => this.setState({password})} value={this.state.password} style={styles.inputbox}/>
              </Form> 
-             <Text></Text>
-             <Button rounded bordered onPress={() => this.Login(this.state.email,this.state.password)} style={styles.button}>
+          <Text></Text>
+             <Button rounded bordered onPress={() =>{ this.Login(this.state.email,this.state.password)}} style={styles.button}>
           <Text style={styles.text}>
             LOGIN
           </Text>
         </Button>
+        <ActivityIndicator
+        color='white'
+        animating={this.state.animating}
+        style={{height:this.state.hght,opacity:this.state.opac}}
+        size="large"
+      />
+         
         <Text></Text>
         <View >
         <Text  style={styles.view}>If Not Registered?</Text>

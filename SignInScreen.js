@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Container, Header, Footer, Body, Title, Content, Card, CardItem, Form, Item, Label,
   Button, Icon, Text} from 'native-base';
-import { StyleSheet, TextInput, Image,ScrollView,View} from 'react-native';
+import { StyleSheet, TextInput, Image,ScrollView,View,ActivityIndicator} from 'react-native';
 import { StackNavigator, } from 'react-navigation';
 import HomeScreen from './Home';
 import MainScreen from './MainScreen';
@@ -34,6 +34,8 @@ export default class SignInScreen extends React.Component {
       password2:'',
       avatarSource:'https://firebasestorage.googleapis.com/v0/b/chitchat-f147c.appspot.com/o/images%2Fdefault.png?alt=media&token=2c799112-82ac-4089-9ecd-66734f0e79fd',
       errors: [],
+      hght:0,
+      opac:0,
     }
   }
   uploadPhoto(){
@@ -147,6 +149,8 @@ export default class SignInScreen extends React.Component {
            {
              const { navigate } = this.props.navigation; 
              try {
+              this.setState({hght:80,
+                opac:1});
                     await firebaseApp.auth().createUserWithEmailAndPassword(email, password1)
                       .then((firebaseUser) => {
                         var user = firebaseApp.auth().currentUser;
@@ -171,6 +175,7 @@ export default class SignInScreen extends React.Component {
                         navigate('Main');          
                       },
                        (error) => {
+                        this.setState({hght:0,opac:0});
                         //  .catch(function(error) { 
                         // Handle Errors here.
                         var errorCode = error.code;
@@ -221,6 +226,13 @@ export default class SignInScreen extends React.Component {
            onChangeText={(password1) => this.setState({ password1 })} value={this.state.password1} />
        <TextInput placeholder="Confirm Password" placeholderTextColor="white" secureTextEntry transparent style={[styles.inputbox, this.state.password2css && styles.emptyBox]} 
            onChangeText={(password2) => this.setState({ password2 })} value={this.state.password2} />
+
+           <ActivityIndicator
+        color='white'
+        animating={this.state.animating}
+        style={{height:this.state.hght,opacity:this.state.opac}}
+        size="large"
+      />
 
             <Button rounded bordered style={styles.button} onPress={() => this.signup(this.state.name,this.state.age,
                  this.state.phone,this.state.email,this.state.password1,this.state.password2,this.state.avatarSource)}>
