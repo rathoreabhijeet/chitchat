@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {  AppRegistry, StyleSheet, Navigator, View,Image,TextInput,} from 'react-native';
+import {  AppRegistry, StyleSheet, Navigator, View,Image,TextInput,ScrollView} from 'react-native';
 import { Container,Body, Form, Item,Input, Label,Button, Text ,Header,
    Content,Left, Right, Icon} from 'native-base';
    import { StackNavigator,} from 'react-navigation';
@@ -65,14 +65,15 @@ export default class HomeScreen extends React.Component {
     const { navigate } = this.props.navigation;
     return (
       <Container style={{ backgroundColor:'#075e54'}}>
- <Image source={ require('./pics/back.png') } /> 
+
       <Content>
-      
+      <ScrollView overScrollMode={'auto'}>
+      <Image source={ require('./pics/back.png') } /> 
       {/* <Image source={{uri :'https://firebasestorage.googleapis.com/v0/b/chitchat-f147c.appspot.com/o/back.png?alt=media&token=05cc9bbe-4417-42ed-af91-dbd53cd739f9'}}/> */}
         <Text></Text>
         <Form>
         <TextInput placeholder="Email" placeholderTextColor="white" keyboardType="email-address"
-        onChangeText={(email) => this.setState({ email })}   value={this.state.email}  style={styles.inputbox}/>
+        onChangeText={(email) => this.setState({ email })}   value={this.state.email}  style={styles.inputbox} />
         <TextInput placeholder="Password" secureTextEntry  placeholderTextColor="white" 
  onChangeText={(password) => this.setState({password})} value={this.state.password} style={styles.inputbox}/>
              </Form> 
@@ -93,7 +94,7 @@ export default class HomeScreen extends React.Component {
               SIGN UP 
             </Text>
           </Button>
-     
+     </ScrollView>
         </Content>
         {/* </Image> */}
       </Container>
@@ -124,11 +125,11 @@ color:'white',
   },
   inputbox: {
     color:'white',
-    borderColor:'white',
+   // borderColor:'white',
     fontWeight:'bold',
     fontSize:20,
     textAlign: "center",
-    borderBottomWidth:2, 
+   // borderBottomWidth:2, 
   },
   text:{
     fontWeight:'bold',

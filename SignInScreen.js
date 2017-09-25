@@ -228,7 +228,7 @@ export default class SignInScreen extends React.Component {
            SIGN UP
           </Text>
         </Button>
-         </ScrollView>    
+            </ScrollView>    
         </Content>
       </Container>
     );

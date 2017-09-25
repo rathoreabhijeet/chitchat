@@ -30,18 +30,15 @@ listenForItems(userRef,ChatwithRef) {
   var chatwith=[]; 
   ChatwithRef.on('value', (snap) => {   
     snap.forEach((child) => { 
-      chatwith.push({
-        id:child.val().ID
-      });      
+      chatwith.push(child.val().ID );      
     });
   });   
 
   userRef.on('value', (snap) => {    
     var user = [];
     snap.forEach((child) => {
-      for(let i in chatwith)
-      {
-        if(chatwith[i].id == child.val().UID)
+    
+        if(chatwith.includes(child.val().UID))
         {
           user.push({
             name: child.val().Name,
@@ -51,11 +48,10 @@ listenForItems(userRef,ChatwithRef) {
             _key: child.key     
           });
         }
-      }
      
     });
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(user.reverse())
+      dataSource: this.state.dataSource.cloneWithRows(user.reverse()),     
     });
   });
 }
