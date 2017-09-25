@@ -38,75 +38,75 @@ export default class SignInScreen extends React.Component {
       opac:0,
     }
   }
-  uploadPhoto(){
-    var options = {
-      title: 'Select Avatar',
-      // customButtons: [
-      //   {name: 'fb', title: 'Choose Photo from Facebook'},
-      // ],
-      storageOptions: {
-        skipBackup: true,
-        path: 'images'
-      }
-    };
-  ImagePicker.showImagePicker(options, (response) => {
-              console.log('Response = ', response);
+  // uploadPhoto(){
+  //   var options = {
+  //     title: 'Select Avatar',
+  //     // customButtons: [
+  //     //   {name: 'fb', title: 'Choose Photo from Facebook'},
+  //     // ],
+  //     storageOptions: {
+  //       skipBackup: true,
+  //       path: 'images'
+  //     }
+  //   };
+  // ImagePicker.showImagePicker(options, (response) => {
+  //             console.log('Response = ', response);
             
-              if (response.didCancel) {
-                console.log('User cancelled image picker');
-              }
-              else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-              }
-              else if (response.customButton) {
-                console.log('User tapped custom button: ', response.customButton);
-              }
-              else {
-                // let source = { uri: response.uri };
+  //             if (response.didCancel) {
+  //               console.log('User cancelled image picker');
+  //             }
+  //             else if (response.error) {
+  //               console.log('ImagePicker Error: ', response.error);
+  //             }
+  //             else if (response.customButton) {
+  //               console.log('User tapped custom button: ', response.customButton);
+  //             }
+  //             else {
+  //               // let source = { uri: response.uri };
             
-                // You can also display the image using data:
-               let source = { uri: 'data:image/jpeg;base64,' + response.data };
-                // let source = 'data:image/jpeg;base64,' + response.data;
-                this.setState({
-                  // avatarSource:source,
-                  imageSrc:response,
-                  file:response.fileName,
-                });
-                // alert("Uploading");
-                // this.upload(source)
-                this.uploadImage(response.uri,response.fileName)
-                .then(url => {this.setState({avatarSource: url}) })
-                .then(alert('Upload Successfull!!! Press SignUP to continue '))
-        .catch(error => console.log(error))
-              }           
-            });   }
-  uploadImage(uri,name, mime = 'application/octet-stream') {
-              return new Promise((resolve, reject) => {
-                const uploadUri = uri;
-                let uploadBlob = null;
+  //               // You can also display the image using data:
+  //              let source = { uri: 'data:image/jpeg;base64,' + response.data };
+  //               // let source = 'data:image/jpeg;base64,' + response.data;
+  //               this.setState({
+  //                 // avatarSource:source,
+  //                 imageSrc:response,
+  //                 file:response.fileName,
+  //               });
+  //               // alert("Uploading");
+  //               // this.upload(source)
+  //               this.uploadImage(response.uri,response.fileName)
+  //               .then(url => {this.setState({avatarSource: url}) })
+  //               .then(alert('Upload Successfull!!! Press SignUP to continue '))
+  //       .catch(error => console.log(error))
+  //             }           
+  //           });   }
+  // uploadImage(uri,name, mime = 'application/octet-stream') {
+  //             return new Promise((resolve, reject) => {
+  //               const uploadUri = uri;
+  //               let uploadBlob = null;
           
-                const imageRef = firebaseApp.storage().ref('images/').child(name)
+  //               const imageRef = firebaseApp.storage().ref('images/').child(name)
           
-                fs.readFile(uploadUri, 'base64')
-                  .then((data) => {
-                    return Blob.build(data, { type: `${mime};BASE64` })
-                  })
-                  .then((blob) => {
-                    uploadBlob = blob
-                    return imageRef.put(blob, { contentType: mime })
-                  })
-                  .then(() => {
-                    uploadBlob.close()
-                    return imageRef.getDownloadURL()
-                  })
-                  .then((url) => {
-                    resolve(url)
-                  })
-                  .catch((error) => {
-                    reject(error)
-                })
-              })
-          }
+  //               fs.readFile(uploadUri, 'base64')
+  //                 .then((data) => {
+  //                   return Blob.build(data, { type: `${mime};BASE64` })
+  //                 })
+  //                 .then((blob) => {
+  //                   uploadBlob = blob
+  //                   return imageRef.put(blob, { contentType: mime })
+  //                 })
+  //                 .then(() => {
+  //                   uploadBlob.close()
+  //                   return imageRef.getDownloadURL()
+  //                 })
+  //                 .then((url) => {
+  //                   resolve(url)
+  //                 })
+  //                 .catch((error) => {
+  //                   reject(error)
+  //               })
+  //             })
+  //         }
   async signup(name,age,phone,email,password1,password2,avatarSource) {
     this.setState({namecss: false})
     this.setState({agecss: false})
@@ -149,8 +149,7 @@ export default class SignInScreen extends React.Component {
            {
              const { navigate } = this.props.navigation; 
              try {
-              this.setState({hght:80,
-                opac:1});
+              this.setState({hght:80, opac:1});
                     await firebaseApp.auth().createUserWithEmailAndPassword(email, password1)
                       .then((firebaseUser) => {
                         var user = firebaseApp.auth().currentUser;

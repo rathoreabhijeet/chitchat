@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet,} from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet,ActivityIndicator} from 'react-native';
 import {Right,Left,Spinner} from 'native-base';
 import ParallaxView from 'react-native-parallax-view';
 import RNFetchBlob from 'react-native-fetch-blob';
@@ -18,10 +18,13 @@ export default class UserProfileScreen extends React.Component {
     });
    
     constructor(props) {
+
       super(props);
       this.state = {
-      avatarSource:'https://firebasestorage.googleapis.com/v0/b/chitchat-f147c.appspot.com/o/images%2Fdefault.png?alt=media&token=2c799112-82ac-4089-9ecd-66734f0e79fd',
-        errors: [],
+      avatarSource:'',
+      hght:0,
+      opac:0, 
+      errors: [],
       }
     }
  
@@ -38,15 +41,19 @@ export default class UserProfileScreen extends React.Component {
         }
       };
     ImagePicker.showImagePicker(options, (response) => {
+      this.setState({hght:80, opac:1});
                 console.log('Response = ', response);
               
                 if (response.didCancel) {
+                 
                   console.log('User cancelled image picker');
                 }
                 else if (response.error) {
+              
                   console.log('ImagePicker Error: ', response.error);
                 }
                 else if (response.customButton) {
+                  
                   console.log('User tapped custom button: ', response.customButton);
                 }
                 else {
@@ -58,7 +65,7 @@ export default class UserProfileScreen extends React.Component {
                   this.setState({
                     // avatarSource:source,
                     imageSrc:response,
-                    file:response.fileName,
+                  file:response.fileName,
                   });
                   // alert("Uploading");
                   // this.upload(source)
@@ -68,8 +75,11 @@ setTimeout(() => firebaseApp.database().ref('user/'+userId).update({ ImageURL: t
          
                 
           .catch(error => console.log(error))
+          this.setState({hght:0,opac:0});
                 }          
-              });   }
+              });  
+   
+            }
     uploadImage(uri,name, mime = 'application/octet-stream') {
                 return new Promise((resolve, reject) => {
                   const uploadUri = uri;
@@ -93,10 +103,11 @@ setTimeout(() => firebaseApp.database().ref('user/'+userId).update({ ImageURL: t
                       resolve(url)
                     })
                     .catch((error) => {
+                      this.setState({hght:0,opac:0});
                       reject(error)
                   })
                 })
-            }
+               }
     render()
     {  var name;
       var URL;
@@ -111,17 +122,25 @@ setTimeout(() => firebaseApp.database().ref('user/'+userId).update({ ImageURL: t
               Phone_No = data.val().Phone_No;
               
          });
+         
      });
      // alert(name);
+      // this.setState({avatarSource:URL});
         return(            
   <ParallaxView 
-    backgroundSource={{ uri:URL }}
+      backgroundSource={{ uri:URL }}
     windowHeight={400}
     header={(
       <View>
       {/* <Spinner color='red' /> */}
+      <ActivityIndicator
+        color='white'
+        animating={this.state.animating}
+        style={{height:this.state.hght,opacity:this.state.opac}}
+        size="large"
+      />
         <TouchableOpacity style={styles.header} onPress={() => this.uploadPhoto(userId)}>
-          <Icon name="camera" color="#075e54" size={33}
+          <Icon name="edit" color="#075e54" size={33}
             style={{ paddingLeft: 10}}
           />
         </TouchableOpacity>
