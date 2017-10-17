@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Container, Header, Content, List,Title,Icon, ListItem,Segment,Button, Left, Body, 
   Right, Thumbnail, Text } from 'native-base';
-import {  AppRegistry, StyleSheet,ListView} from 'react-native';
+import {  AppRegistry, StyleSheet,ListView,BackHandler,ToastAndroid,Dimensions} from 'react-native';
 import firebaseApp from './Firebase';
 import MessageScreen from './MessageScreen';
-
+const { width, height } = Dimensions.get('window');
 export default class ContactScreen extends Component {
   static navigationOptions = {
     title: 'Chats',
@@ -14,6 +14,7 @@ export default class ContactScreen extends Component {
   super(props);
   this.state = {     
     errors: [],
+    count:0,
     dataSource: new ListView.DataSource({
       rowHasChanged: (row1, row2) => row1 !== row2,
     })
@@ -33,7 +34,8 @@ listenForItems(userRef) {
       url: child.val().ImageURL,
       phone:child.val().Phone_No,
       uid:child.val().UID,
-      _key: child.key
+      _key: child.key,
+      status:child.val().status
      
     });
  // }
@@ -46,14 +48,16 @@ listenForItems(userRef) {
 
 componentDidMount() {
   this.listenForItems(this.userRef);
+  // BackHandler.addEventListener('hardwareBackPress', this.onBackPress.bind(this));
 }
+
 
 _renderItem(Userdata) {
   const { navigate } = this.props.navigation;
   return (
-    <ListItem avatar Userdata={Userdata} style={{margin:3}} onPress={() => navigate('Message',{ username: Userdata.name,Rid:Userdata._key,phone:Userdata.phone,url:Userdata.url  })}>
+    <ListItem avatar Userdata={Userdata} style={{marginBottom:0,width:width,marginLeft:0}} onPress={() => navigate('Message',{ Rid:Userdata._key,username: Userdata.name,status:Userdata.status,phone:Userdata.phone,url:Userdata.url  })}>
     <Left>
-      <Thumbnail source={{ uri:Userdata.url  }} />
+      <Thumbnail source={{ uri:Userdata.url  }} style={{marginLeft:3}} />
     </Left><Body>
       <Text>{Userdata.name}</Text></Body>
     </ListItem>
