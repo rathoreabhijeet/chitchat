@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {   StyleSheet, Navigator, View,Image,TextInput,TouchableOpacity} from 'react-native';
-import { Container,Footer,Form, Item,Button, Text ,Content,Header, Right,Left,Icon} from 'native-base';
+import {   StyleSheet, Navigator, View,Image,TextInput,TouchableOpacity,BackHandler,ToastAndroid} from 'react-native';
+import { Container,Footer,Form, Item,Button, Text ,Content,Header, Right,Left,Icon,Input} from 'native-base';
 import { StackNavigator,} from 'react-navigation';
 import * as firebase from "firebase";
 import HomeScreen from './Home';
@@ -8,7 +8,7 @@ import ChatScreen from './ChatScreen';
 import ContactScreen from './ContactScreen';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import firebaseApp from './Firebase';
-
+import { Actions } from 'react-native-router-flux'
 export default class MainScreen extends React.Component {  
     static navigationOptions = {
       title: 'ChitChat', 
@@ -32,17 +32,34 @@ export default class MainScreen extends React.Component {
       super(props);
       this.state = {
         ChatScreen: [],
+        count:0,
         ContactScreen:[],
         errors: [],
+        opacity1:1,
+        height1:'auto',
+        height2:0,
+        opacity2:0,
+        buttonTrue:true,
+        searchButton:false
       }
     }
 
+    componentDidMount() {
+      // BackHandler.addEventListener('hardwareBackPress', this.onBackPress.bind(this));
+      BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+      this.setState({
+        height1:'auto',
+        opacity1:1,
+        buttonTrue:true
+      })
+  }
+ 
     render() {
         const { navigate } = this.props.navigation;
         const {goBack} = this.props.navigation;
         return (     
          <Container>        
-     <Header style={styles.header}>
+     <Header searchBar rounded style={styles.header}>
        <Left>
        <Text style={styles.header}>ChitChat</Text>
      </Left>
@@ -50,10 +67,10 @@ export default class MainScreen extends React.Component {
  <Button transparent  onPress={() =>navigate('uprofile')}>
     <Icon name="people"/> 
     </Button>
-     <Button transparent>
+     <Button  transparent >
     <Icon name="search"/> 
     </Button>
- <Button style={{backgroundColor:"#075e54" }}  onPress={() => this.Logout()} >
+ <Button  transparent   onPress={() => this.Logout()} >
     <Icon  name="log-out"  />  
     </Button> 
      </Right>
@@ -94,5 +111,15 @@ export default class MainScreen extends React.Component {
        color:'white',
        fontWeight:'bold',
        fontSize:20,
-     }
+     },
+     overlay: {
+      flex: 1,
+      left:3,
+      top:3,
+      position: 'absolute',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      color:'#fff',
+    } ,
     });

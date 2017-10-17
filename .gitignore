@@ -33,6 +33,7 @@ local.properties
 # node.js
 #
 node_modules/
+native-base-theme/
 npm-debug.log
 yarn-error.log
 

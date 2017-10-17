@@ -4,14 +4,22 @@ import {
   View,
   TouchableOpacity,
   StyleSheet,
+  BackHandler
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ParallaxView from 'react-native-parallax-view';
-
+import { NavigationActions } from 'react-navigation'
 export default class ProfileScreen extends React.Component {
     static navigationOptions = ({ navigation }) => ({
     header:null,
     });
+    constructor(props){
+      super(props);
+      this.state={
+        status:''
+      }
+
+    }
     render()
     {
       var date = new Date().toString();
@@ -22,12 +30,6 @@ export default class ProfileScreen extends React.Component {
     windowHeight={400}
     header={(
       <View>
-        {/* <TouchableOpacity style={styles.header} onPress={() => alert('back')}>
-          <Icon
-            name="arrow-back" color="#fff" size={23}
-            style={{ paddingLeft: 10 }}
-          />
-        </TouchableOpacity> */}
         <Text style={styles.title}>{user.name}</Text>
       </View>
     )}
@@ -53,7 +55,7 @@ export default class ProfileScreen extends React.Component {
     <View style={styles.card}>
       <View style={styles.row}>
         <Text style={styles.green}>Status and Phone</Text>
-        <Text style={styles.text}>Good morning</Text>
+        <Text style={styles.text}>{user.status}</Text>
         <Text style={styles.subText}>{date.substring(0,15)}</Text>
       </View>
       <View style={styles.number}>
@@ -90,7 +92,6 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   row: {
-    height: 70,
     padding: 10,
     justifyContent: 'center',
     borderBottomWidth: 1,

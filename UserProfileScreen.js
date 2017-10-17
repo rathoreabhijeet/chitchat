@@ -1,8 +1,9 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet,ActivityIndicator} from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet,ActivityIndicator,BackHandler,Button, Modal,TextInput} from 'react-native';
 import {Right,Left,Spinner} from 'native-base';
 import ParallaxView from 'react-native-parallax-view';
 import RNFetchBlob from 'react-native-fetch-blob';
+import { StackNavigator,} from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 var ImagePicker = require('react-native-image-picker');
 // Prepare Blob support
@@ -10,6 +11,8 @@ const Blob = RNFetchBlob.polyfill.Blob
 const fs = RNFetchBlob.fs
 window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
 window.Blob = Blob
+ var URL;
+ /////////
 
 export default class UserProfileScreen extends React.Component {
     static navigationOptions = ({ navigation }) => ({
@@ -18,42 +21,62 @@ export default class UserProfileScreen extends React.Component {
     });
    
     constructor(props) {
-
       super(props);
       this.state = {
       avatarSource:'',
-      hght:0,
-      opac:0, 
-      errors: [],
+        errors: [],
+        hght:0,
+        opac:0,
+        heightStatus:'auto',
+        opacityStatus:1,
+        status:'Hey, Check out the ChitChat!!',
+        editStatus:false,
+        editHeight:0,
+        editOpacity:0,
+        inputVisible:false,
+        editWidth:0,
+        penHeight:25,
+        penOpacity:1,
+        saveHeight:0,
+        saveOpacity:1
       }
+      var userId = firebaseApp.auth().currentUser.uid;
+      firebaseApp.database().ref().child('user').orderByChild('UID').equalTo(userId).on("value",function(snapshot) {
+        
+         snapshot.forEach(function(data) {
+              name = data.val().Name;
+              URL= data.val().ImageURL;
+              Phone_No = data.val().Phone_No;
+              status=data.val().status;
+              
+         });
+     });
+     this.state.avatarSource=URL;
+     this.state.status=status;
     }
  
     uploadPhoto(userId){
       var pic;
       var options = {
         title: 'Select Avatar',
-        // customButtons: [
-        //   {name: 'fb', title: 'Choose Photo from Facebook'},
-        // ],
         storageOptions: {
           skipBackup: true,
           path: 'images'
         }
       };
     ImagePicker.showImagePicker(options, (response) => {
-      this.setState({hght:80, opac:1});
                 console.log('Response = ', response);
-              
+                this.setState({hght:80,
+                  opac:1});
                 if (response.didCancel) {
-                 
+                  this.setState({hght:0,opac:0});
                   console.log('User cancelled image picker');
                 }
                 else if (response.error) {
-              
+                  this.setState({hght:0,opac:0});
                   console.log('ImagePicker Error: ', response.error);
                 }
                 else if (response.customButton) {
-                  
                   console.log('User tapped custom button: ', response.customButton);
                 }
                 else {
@@ -65,21 +88,18 @@ export default class UserProfileScreen extends React.Component {
                   this.setState({
                     // avatarSource:source,
                     imageSrc:response,
-                  file:response.fileName,
+                    file:response.fileName,
                   });
                   // alert("Uploading");
                   // this.upload(source)
                   this.uploadImage(response.uri,response.fileName)
-                  .then(url => {this.setState({avatarSource: url}) },
+                  .then(url => {console.log(url),this.setState({avatarSource: url}) },
+                  
 setTimeout(() => firebaseApp.database().ref('user/'+userId).update({ ImageURL: this.state.avatarSource }), 9000))                
-         
                 
           .catch(error => console.log(error))
-          this.setState({hght:0,opac:0});
                 }          
-              });  
-   
-            }
+              });   }
     uploadImage(uri,name, mime = 'application/octet-stream') {
                 return new Promise((resolve, reject) => {
                   const uploadUri = uri;
@@ -96,21 +116,59 @@ setTimeout(() => firebaseApp.database().ref('user/'+userId).update({ ImageURL: t
                       return imageRef.put(blob, { contentType: mime })
                     })
                     .then(() => {
-                      uploadBlob.close()
+                      uploadBlob.close();
+                      this.setState({hght:0,opac:0});
                       return imageRef.getDownloadURL()
                     })
                     .then((url) => {
-                      resolve(url)
+                      resolve(url);
+                      // this.setState({hght:0,opac:0});
                     })
                     .catch((error) => {
-                      this.setState({hght:0,opac:0});
-                      reject(error)
+                      reject(error);
+                      // this.setState({hght:0,opac:0});
                   })
                 })
-               }
+            }  
+            editStatus() { this.setState({
+              inputVisible:true,
+              editStatus:true,
+              heightStatus:0,
+              editHeight:'auto',
+              editOpacity:1,
+              opacityStatus:0,
+              editWidth:'85%',
+              penHeight:0,
+              penOpacity:0,
+              saveHeight:25,
+              saveOpacity:1
+            }); }    
+            updateStatus(){
+              this.setState({
+                inputVisible:false,
+                editStatus:false,
+                heightStatus:'auto',
+                editHeight:0,
+                editOpacity:0,
+                opacityStatus:1,
+                editWidth:'0%',
+                penHeight:25,
+                penOpacity:1,
+                saveHeight:0,
+                saveOpacity:0
+              });
+              var userId = firebaseApp.auth().currentUser.uid;
+              firebaseApp.database().ref('user/'+userId).update({ status: this.state.status });
+            }
+    getStatus(){
+      var userId = firebaseApp.auth().currentUser.uid;
+
+    }        
+    componentDidMount(){
+
+    }
     render()
     {  var name;
-      var URL;
       var Phone_No;
       var date = new Date().toString();
       var userId = firebaseApp.auth().currentUser.uid;
@@ -118,27 +176,25 @@ setTimeout(() => firebaseApp.database().ref('user/'+userId).update({ ImageURL: t
         
          snapshot.forEach(function(data) {
               name = data.val().Name;
-              URL = data.val().ImageURL;
+              URL= data.val().ImageURL;
               Phone_No = data.val().Phone_No;
               
          });
-         
      });
-     // alert(name);
-      // this.setState({avatarSource:URL});
         return(            
   <ParallaxView 
-      backgroundSource={{ uri:URL }}
+    backgroundSource={{ uri:this.state.avatarSource}}
     windowHeight={400}
     header={(
       <View>
-      {/* <Spinner color='red' /> */}
+ <View style={styles.overlay}>
       <ActivityIndicator
-        color='white'
+        color='#075e54'
         animating={this.state.animating}
         style={{height:this.state.hght,opacity:this.state.opac}}
-        size="large"
+        size={100}
       />
+</View>
         <TouchableOpacity style={styles.header} onPress={() => this.uploadPhoto(userId)}>
           <Icon name="edit" color="#075e54" size={33}
             style={{ paddingLeft: 10}}
@@ -149,6 +205,7 @@ setTimeout(() => firebaseApp.database().ref('user/'+userId).update({ ImageURL: t
     )}
     scrollableViewStyle={{ backgroundColor: '#ece5dd' }}
   >
+
     <View style={styles.card}>
       <View style={styles.row}>
         <Text style={styles.text}>Mute</Text>
@@ -169,7 +226,20 @@ setTimeout(() => firebaseApp.database().ref('user/'+userId).update({ ImageURL: t
     <View style={styles.card}>
       <View style={styles.row}>
         <Text style={styles.green}>Status and Phone</Text>
-        <Text style={styles.text}>Good morning !!!!!!!! </Text>
+        <View style={{flexDirection:'row'}}>
+        <Text  style={[styles.text,{width:'85%',height:this.state.heightStatus,opacity:this.state.opacityStatus}]}>{this.state.status}</Text>
+        <TouchableOpacity style={{alignSelf: 'flex-end',opacity:this.state.penOpacity}} onPress={() => { this.editStatus() }} >
+          <Icon name="edit" color="#075e54" size={this.state.penHeight} style={{ padding: 5 }}
+          />
+        </TouchableOpacity>
+        </View>
+        <View style={{flexDirection:'row'}}>
+        <TextInput multiline={true} maxLength={200} visible={this.state.inputVisible} value={this.state.status} onChangeText={(status) => this.setState({status})} editable={this.state.editStatus} style={{width:this.state.editWidth,height:this.state.editHeight,opacity:this.state.editOpacity}}/>
+        <TouchableOpacity style={{alignSelf: 'flex-end',opacity:this.state.saveOpacity}}  blurOnSubmit={true} onPress={() => { this.updateStatus() }} >
+          <Icon name="save" color="#075e54" size={this.state.saveHeight} style={{ padding: 5 }}
+          />
+        </TouchableOpacity>
+        </View>
         <Text style={styles.subText}>{date.substring(0,15)}</Text>
       </View>
       <View style={styles.number}>
@@ -205,10 +275,19 @@ const styles = StyleSheet.create({
   card: {
     marginTop: 8,
   },
-  row: {
-    height: 70,
-    padding: 10,
+  overlay: {
+    flex: 1,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+    flexDirection: 'column',
     justifyContent: 'center',
+    alignItems: 'center',
+  } ,
+  row: {
+    padding: 10,
     borderBottomWidth: 1,
     borderColor: '#f5f5f5',
     backgroundColor: '#fff',
@@ -246,4 +325,9 @@ const styles = StyleSheet.create({
     color: '#075e54',
     fontSize: 20,
   },
+  container: {
+    alignItems: 'center',
+    backgroundColor: '#ede3f2',
+    padding: 100
+ }
 });

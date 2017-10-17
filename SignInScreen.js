@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Container, Header, Footer, Body, Title, Content, Card, CardItem, Form, Item, Label,
   Button, Icon, Text} from 'native-base';
-import { StyleSheet, TextInput, Image,ScrollView,View,ActivityIndicator} from 'react-native';
+import { StyleSheet, TextInput, Image,ScrollView,View,ActivityIndicator,BackHandler} from 'react-native';
 import { StackNavigator, } from 'react-navigation';
 import HomeScreen from './Home';
 import MainScreen from './MainScreen';
@@ -38,75 +38,75 @@ export default class SignInScreen extends React.Component {
       opac:0,
     }
   }
-  // uploadPhoto(){
-  //   var options = {
-  //     title: 'Select Avatar',
-  //     // customButtons: [
-  //     //   {name: 'fb', title: 'Choose Photo from Facebook'},
-  //     // ],
-  //     storageOptions: {
-  //       skipBackup: true,
-  //       path: 'images'
-  //     }
-  //   };
-  // ImagePicker.showImagePicker(options, (response) => {
-  //             console.log('Response = ', response);
+  uploadPhoto(){
+    var options = {
+      title: 'Select Avatar',
+      // customButtons: [
+      //   {name: 'fb', title: 'Choose Photo from Facebook'},
+      // ],
+      storageOptions: {
+        skipBackup: true,
+        path: 'images'
+      }
+    };
+  ImagePicker.showImagePicker(options, (response) => {
+              console.log('Response = ', response);
             
-  //             if (response.didCancel) {
-  //               console.log('User cancelled image picker');
-  //             }
-  //             else if (response.error) {
-  //               console.log('ImagePicker Error: ', response.error);
-  //             }
-  //             else if (response.customButton) {
-  //               console.log('User tapped custom button: ', response.customButton);
-  //             }
-  //             else {
-  //               // let source = { uri: response.uri };
+              if (response.didCancel) {
+                console.log('User cancelled image picker');
+              }
+              else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+              }
+              else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+              }
+              else {
+                // let source = { uri: response.uri };
             
-  //               // You can also display the image using data:
-  //              let source = { uri: 'data:image/jpeg;base64,' + response.data };
-  //               // let source = 'data:image/jpeg;base64,' + response.data;
-  //               this.setState({
-  //                 // avatarSource:source,
-  //                 imageSrc:response,
-  //                 file:response.fileName,
-  //               });
-  //               // alert("Uploading");
-  //               // this.upload(source)
-  //               this.uploadImage(response.uri,response.fileName)
-  //               .then(url => {this.setState({avatarSource: url}) })
-  //               .then(alert('Upload Successfull!!! Press SignUP to continue '))
-  //       .catch(error => console.log(error))
-  //             }           
-  //           });   }
-  // uploadImage(uri,name, mime = 'application/octet-stream') {
-  //             return new Promise((resolve, reject) => {
-  //               const uploadUri = uri;
-  //               let uploadBlob = null;
+                // You can also display the image using data:
+               let source = { uri: 'data:image/jpeg;base64,' + response.data };
+                // let source = 'data:image/jpeg;base64,' + response.data;
+                this.setState({
+                  // avatarSource:source,
+                  imageSrc:response,
+                  file:response.fileName,
+                });
+                // alert("Uploading");
+                // this.upload(source)
+                this.uploadImage(response.uri,response.fileName)
+                .then(url => {this.setState({avatarSource: url}) })
+                .then(alert('Upload Successfull!!! Press SignUP to continue '))
+        .catch(error => console.log(error))
+              }           
+            });   }
+  uploadImage(uri,name, mime = 'application/octet-stream') {
+              return new Promise((resolve, reject) => {
+                const uploadUri = uri;
+                let uploadBlob = null;
           
-  //               const imageRef = firebaseApp.storage().ref('images/').child(name)
+                const imageRef = firebaseApp.storage().ref('images/').child(name)
           
-  //               fs.readFile(uploadUri, 'base64')
-  //                 .then((data) => {
-  //                   return Blob.build(data, { type: `${mime};BASE64` })
-  //                 })
-  //                 .then((blob) => {
-  //                   uploadBlob = blob
-  //                   return imageRef.put(blob, { contentType: mime })
-  //                 })
-  //                 .then(() => {
-  //                   uploadBlob.close()
-  //                   return imageRef.getDownloadURL()
-  //                 })
-  //                 .then((url) => {
-  //                   resolve(url)
-  //                 })
-  //                 .catch((error) => {
-  //                   reject(error)
-  //               })
-  //             })
-  //         }
+                fs.readFile(uploadUri, 'base64')
+                  .then((data) => {
+                    return Blob.build(data, { type: `${mime};BASE64` })
+                  })
+                  .then((blob) => {
+                    uploadBlob = blob
+                    return imageRef.put(blob, { contentType: mime })
+                  })
+                  .then(() => {
+                    uploadBlob.close()
+                    return imageRef.getDownloadURL()
+                  })
+                  .then((url) => {
+                    resolve(url)
+                  })
+                  .catch((error) => {
+                    reject(error)
+                })
+              })
+          }
   async signup(name,age,phone,email,password1,password2,avatarSource) {
     this.setState({namecss: false})
     this.setState({agecss: false})
@@ -149,7 +149,8 @@ export default class SignInScreen extends React.Component {
            {
              const { navigate } = this.props.navigation; 
              try {
-              this.setState({hght:80, opac:1});
+              this.setState({hght:80,
+                opac:1});
                     await firebaseApp.auth().createUserWithEmailAndPassword(email, password1)
                       .then((firebaseUser) => {
                         var user = firebaseApp.auth().currentUser;
@@ -161,6 +162,7 @@ export default class SignInScreen extends React.Component {
                         Email: email,
                         UID:user.uid,
                         ImageURL:avatarSource,
+                        status:"Hey, I'm using ChitChat"
                           });
                           this.setState({
                             name:'',
@@ -206,32 +208,51 @@ export default class SignInScreen extends React.Component {
     }
     else
     { alert('Password do not match'); }
-  }      
+  } 
+  componentWillUnmount(){
+    this.setState({hght:0,opac:0});
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  } 
+  componentDidMount() {
+    // this.listenForItems(this.chatRef);
+    BackHandler.addEventListener('hardwareBackPress', this.onBackPress.bind(this));
+  }
+    onBackPress(){
+     this.props.navigation.navigate('Home');
+     return true;
+    }   
+ 
   render() {
     const { navigate } = this.props.navigation;
+    
     return (
       <Container style={{ backgroundColor:'#075e54'}}>        
          <Content><ScrollView>
-       <Image source={ require('./pics/back.png') }  />       
-      <TextInput placeholder="Name"  placeholderTextColor="white" transparent style={[styles.inputbox, this.state.namecss && styles.emptyBox]} maxLength = {15} returnKeyType="next"
-           onChangeText={(name) => this.setState({ name })}  value={this.state.name}  />
-       <TextInput placeholder="Age" placeholderTextColor="white" transparent style={[styles.inputbox, this.state.agecss && styles.emptyBox]} keyboardType='numeric' maxLength = {2} returnKeyType="next"
-           onChangeText={(age) => this.setState( {age })}  value={this.state.age}  /> 
-       <TextInput placeholder="Phone No." placeholderTextColor="white" transparent style={[styles.inputbox, this.state.phonecss && styles.emptyBox]} keyboardType='numeric' maxLength = {10} returnKeyType="next"
-          onChangeText={(phone) => this.setState({ phone })}   value={this.state.phone} /> 
-       <TextInput placeholder="Email" placeholderTextColor="white" transparent style={[styles.inputbox, this.state.emailcss && styles.emptyBox]} keyboardType="email-address" returnKeyType="next"
-           onChangeText={(email) => this.setState({ email })} value={this.state.email} />
-       <TextInput placeholder="Password" placeholderTextColor="white" secureTextEntry transparent style={[styles.inputbox, this.state.password1css && styles.emptyBox]} returnKeyType="next"
-           onChangeText={(password1) => this.setState({ password1 })} value={this.state.password1} />
-       <TextInput placeholder="Confirm Password" placeholderTextColor="white" secureTextEntry transparent style={[styles.inputbox, this.state.password2css && styles.emptyBox]} 
-           onChangeText={(password2) => this.setState({ password2 })} value={this.state.password2} />
+       <Image source={ require('./pics/back.png') } style={{alignSelf:'center'}} />       
+      <TextInput placeholder="Name" ref="name"  placeholderTextColor="white" transparent style={[styles.inputbox, this.state.namecss && styles.emptyBox]} maxLength = {15} returnKeyType="next"
+           onChangeText={(name) => this.setState({ name })}  value={this.state.name} autoFocus={true}
+           onSubmitEditing={() => this.ageInput.focus()}/>
+       <TextInput placeholder="Age" ref={(input) => { this.ageInput = input; }} placeholderTextColor="white" transparent style={[styles.inputbox, this.state.agecss && styles.emptyBox]} keyboardType='numeric' maxLength = {2} returnKeyType="next"
+           onChangeText={(age) => this.setState( {age })}  value={this.state.age} onSubmitEditing={() => this.phoneInput.focus()} /> 
+       <TextInput placeholder="Phone No." ref={(input) => { this.phoneInput = input; }} placeholderTextColor="white" transparent style={[styles.inputbox, this.state.phonecss && styles.emptyBox]} keyboardType='numeric' maxLength = {10} returnKeyType="next"
+          onChangeText={(phone) => this.setState({ phone })}   value={this.state.phone} onSubmitEditing={() => this.emailInput.focus()}/> 
+       <TextInput placeholder="Email" ref={(input) => { this.emailInput = input; }} placeholderTextColor="white" transparent style={[styles.inputbox, this.state.emailcss && styles.emptyBox]} keyboardType="email-address" returnKeyType="next"
+           onChangeText={(email) => this.setState({ email })} value={this.state.email} onSubmitEditing={() => this.psdInput.focus()} />
+       <TextInput placeholder="Password" ref={(input) => { this.psdInput = input; }} placeholderTextColor="white" secureTextEntry transparent style={[styles.inputbox, this.state.password1css && styles.emptyBox]} returnKeyType="next"
+           onChangeText={(password1) => this.setState({ password1 })} value={this.state.password1} onSubmitEditing={() => this.psd2Input.focus()} />
+       <TextInput placeholder="Confirm Password" ref={(input) => { this.psd2Input = input; }} placeholderTextColor="white" secureTextEntry transparent style={[styles.inputbox, this.state.password2css && styles.emptyBox]} 
+           onChangeText={(password2) => this.setState({ password2 })} value={this.state.password2} returnKeyType={'go'}
+           onSubmitEditing={()=>this.signup(this.state.name,this.state.age,
+                 this.state.phone,this.state.email,this.state.password1,this.state.password2,this.state.avatarSource)} />
 
+           <View style={styles.overlay}>
            <ActivityIndicator
-        color='white'
-        animating={this.state.animating}
-        style={{height:this.state.hght,opacity:this.state.opac}}
-        size="large"
-      />
+             color='gray'
+             animating={this.state.animating}
+             style={{height:this.state.hght,opacity:this.state.opac}}
+             size={100}
+           />
+     </View>
 
             <Button rounded bordered style={styles.button} onPress={() => this.signup(this.state.name,this.state.age,
                  this.state.phone,this.state.email,this.state.password1,this.state.password2,this.state.avatarSource)}>
@@ -272,12 +293,21 @@ var styles = StyleSheet.create({
      inputbox: {
       textAlign: "center",
       color:'white',
-      borderColor:'white',
+      // borderColor:'white',
       fontWeight:'bold',
-      fontSize:20,
-      //borderWidth:2,
-      borderBottomWidth:2, 
+      fontSize:20, 
     },
+    overlay: {
+      flex: 1,
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      position: 'absolute',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+    } ,
      Image: {
       // justifyContent :'center',
        flex:1,

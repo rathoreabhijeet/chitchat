@@ -1,14 +1,16 @@
 import React from 'react';
 import { Container, Header,Footer,FooterTab,Body,Title,Content,Card,CardItem,Form,Item,Input,Label,Button,
 Icon,Text,View,Div,Left,Right,ListItem ,Thumbnail,} from 'native-base';
-import {  AppRegistry, StyleSheet,TouchableOpacity,ListView} from 'react-native';
+import {  AppRegistry, StyleSheet,TouchableOpacity,ListView,BackHandler,ScrollView,Dimensions} from 'react-native';
 import firebaseApp from './Firebase';
 import InvertibleScrollView from 'react-native-invertible-scroll-view';
+import { NavigationActions } from 'react-navigation';
 
 var user = firebaseApp.auth().currentUser;
+var senderId,receiverId;
+const { width, height } = Dimensions.get('window');
 export default class MessageScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
-   // title: `${navigation.state.params.user}`,
   header:null,
   });
  
@@ -17,7 +19,7 @@ export default class MessageScreen extends React.Component {
     this.state = {
       message:'',
       keyDb:'',
-      dataSource: new ListView.DataSource({
+       dataSource:new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2,
       }),
       errors: [],
@@ -26,6 +28,8 @@ export default class MessageScreen extends React.Component {
     var keyDb;
     var Rkey= this.props.navigation.state.params.Rid;
     var userId = firebaseApp.auth().currentUser.uid;
+    receiverId=Rkey;
+    senderId=userId;
     firebaseApp.database().ref().child('user').orderByChild('UID').equalTo(userId).on("value",function(snapshot) {
        
         snapshot.forEach(function(data) {
@@ -67,6 +71,9 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
       receiverId:Rkey,
       read:false,
     });
+    firebaseApp.database().ref('Unread/'+Rkey+'/'+Ukey+'/').push({
+      text:message,
+    })
 
    var userRef =firebaseApp.database().ref('user/'+Ukey).child('ChatWith');
    
@@ -121,15 +128,16 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
   
       });
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(messages.reverse())
+        dataSource: this.state.dataSource.cloneWithRows(messages)
       });
     });
   }
   
   componentDidMount() {
     this.listenForItems(this.chatRef);
+    firebaseApp.database().ref('Unread/'+senderId+'/'+receiverId+'/').remove();
   }
-  
+
   _renderItem(msg)
    { 
     var userId = firebaseApp.auth().currentUser.uid;
@@ -137,9 +145,9 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
     {
       return (
     <View style={styles.rightMsg} >
-    <View style={styles.rightBlock} >
+    <View style={styles.rightBlock} >   
       <Text style={styles.rightTxt}>{msg.message}</Text>
-     <Right><Text note style={{color:'grey'}}>{msg.date.substring(16,21)}</Text></Right>
+       <Right><Text note style={{color:'grey'}}>{msg.date.substring(16,21)}</Text></Right>                  
     </View>
     </View>
         );
@@ -147,11 +155,12 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
     else    {
       return ( 
         <View style={styles.eachMsg}>
-        <View style={styles.msgBlock}>
-          <Text style={styles.msgTxt}>{msg.message}</Text>
+         <View style={styles.msgBlock}>
+              <Text style={styles.msgTxt}>{msg.message}</Text>
           <Text note style={{color:'grey'}}>{msg.date.substring(16,21)}</Text>
-        </View>
-      </View>);}
+      </View>
+     </View>
+    );}
       
   
   }
@@ -176,10 +185,10 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
          
            <Header style={styles.header}>          
            <Left>
-           <TouchableOpacity onPress={() =>navigate('profile',{name:user.username,phone:user.phone,url:user.url})}>
+           <TouchableOpacity onPress={() =>navigate('profile',{status:user.status,name:user.username,phone:user.phone,url:user.url})}>
 <Thumbnail source={{ uri: user.url }} /></TouchableOpacity>
 </Left>
-<TouchableOpacity onPress={() =>navigate('profile',{name:user.username,phone:user.phone,url:user.url})}>
+<TouchableOpacity onPress={() =>navigate('profile',{status:user.status,name:user.username,phone:user.phone,url:user.url})}>
 
 <Body><Text style={styles.header}>{user.username}</Text></Body>
 </TouchableOpacity>
@@ -187,22 +196,22 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
           <Button style={{backgroundColor:"#075e54" }} onPress={() =>navigate('call',{name:user.username,url:user.url})}><Icon name="call"/>
           </Button></Right>
           </Header>
-          <Content >
-         <ListView
+          <Content ><ScrollView >
+         <ListView 
               enableEmptySections
-              noScroll
-              renderScrollComponent={props =>
-                <InvertibleScrollView {...props} inverted />}
+              //noScroll
+             renderScrollComponent={props =>
+                <InvertibleScrollView {...props}  />}
                 dataSource={this.state.dataSource}
               contentContainerStyle={{ justifyContent: 'flex-end' }}
               renderRow={this._renderItem.bind(this)}
               style={{ flex: 1 }}/>
+             </ScrollView>
+           </Content>        
 
-            
-           </Content>                             
     <Footer style={{height:80}}>
                <Item regular style={{width:'100%',backgroundColor:'white'}}>              
- <Input multiline = {true}  numberOfLines = {3}
+ <Input multiline = {true}  numberOfLines = {3} style={{ flexDirection: 'row'}}
    onChangeText={(message) => this.setState({ message })}   value={this.state.message} />
 
          <Button transparent iconRight onPress={() => this.sendMessage(this.state.message,date,Ukey,Rkey)}>
