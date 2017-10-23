@@ -63,11 +63,11 @@ export default class ProfileScreen extends React.Component {
           <Text style={styles.text}>{user.phone}</Text>
           <Text style={styles.subText}>Mobile</Text>
         </View>
-        <View style={{ flexDirection: 'row' }}>
+        {/* <View style={{ flexDirection: 'row' }}>
           <Icon name="chat" color="#075e54" size={23} style={{ padding: 5 }}  />
           <Icon name="call" color="#075e54" size={23} style={{ padding: 5 }}  />
           <Icon name="videocam" color="#075e54" size={23} style={{ padding: 5 }}/>
-        </View>
+        </View> */}
       </View>
     </View>
   </ParallaxView>

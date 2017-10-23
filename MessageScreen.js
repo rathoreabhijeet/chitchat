@@ -193,8 +193,9 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
 <Body><Text style={styles.header}>{user.username}</Text></Body>
 </TouchableOpacity>
         <Right>
-          <Button style={{backgroundColor:"#075e54" }} onPress={() =>navigate('call',{name:user.username,url:user.url})}><Icon name="call"/>
-          </Button></Right>
+          {/* <Button style={{backgroundColor:"#075e54" }} onPress={() =>navigate('call',{name:user.username,url:user.url})}><Icon name="call"/>
+          </Button> */}
+          </Right>
           </Header>
           <Content ><ScrollView >
          <ListView 

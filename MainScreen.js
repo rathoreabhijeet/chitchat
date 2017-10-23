@@ -67,9 +67,9 @@ export default class MainScreen extends React.Component {
  <Button transparent  onPress={() =>navigate('uprofile')}>
     <Icon name="people"/> 
     </Button>
-     <Button  transparent >
+     {/* <Button  transparent >
     <Icon name="search"/> 
-    </Button>
+    </Button> */}
  <Button  transparent   onPress={() => this.Logout()} >
     <Icon  name="log-out"  />  
     </Button> 
