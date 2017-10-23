@@ -17,12 +17,9 @@ export default class MainScreen extends React.Component {
     async Logout(email, password) {
       const { navigate } = this.props.navigation; 
        try { 
-      firebaseApp.auth().signOut().then(function() {
-      // navigate('Test');
-    
+      firebaseApp.auth().signOut().then(function() {    
       }).catch(function(error) {
-         });
-        
+         });        
     }
     catch (error) {
       console.log(error.toString())
@@ -45,7 +42,6 @@ export default class MainScreen extends React.Component {
     }
 
     componentDidMount() {
-      // BackHandler.addEventListener('hardwareBackPress', this.onBackPress.bind(this));
       BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
       this.setState({
         height1:'auto',
@@ -67,10 +63,7 @@ export default class MainScreen extends React.Component {
  <Button transparent  onPress={() =>navigate('uprofile')}>
     <Icon name="people"/> 
     </Button>
-     {/* <Button  transparent >
-    <Icon name="search"/> 
-    </Button> */}
- <Button  transparent   onPress={() => this.Logout()} >
+    <Button  transparent   onPress={() => this.Logout()} >
     <Icon  name="log-out"  />  
     </Button> 
      </Right>

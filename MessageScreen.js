@@ -179,7 +179,6 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
             Ukey=data.key;
         });
     });
-    // var user=this.props.navigation.state.params;
     return (
       <Container style={styles.container} >
          
@@ -193,8 +192,6 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
 <Body><Text style={styles.header}>{user.username}</Text></Body>
 </TouchableOpacity>
         <Right>
-          {/* <Button style={{backgroundColor:"#075e54" }} onPress={() =>navigate('call',{name:user.username,url:user.url})}><Icon name="call"/>
-          </Button> */}
           </Right>
           </Header>
           <Content ><ScrollView >
@@ -220,9 +217,7 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
                       <Icon name='arrow-forward' />
                    </Button>
                </Item>              
-               </Footer>
-           
-            
+               </Footer> 
       </Container>
     );
   }

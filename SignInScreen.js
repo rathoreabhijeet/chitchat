@@ -9,20 +9,15 @@ import MainScreen from './MainScreen';
 import firebaseApp from './Firebase';
 import RNFetchBlob from 'react-native-fetch-blob'
 var ImagePicker = require('react-native-image-picker');
-// Prepare Blob support
 const Blob = RNFetchBlob.polyfill.Blob
 const fs = RNFetchBlob.fs
 window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
 window.Blob = Blob
-
-
 export default class SignInScreen extends React.Component {
   static navigationOptions = {
     title: 'SIGN IN',
     header:null,
-  };
-
-     
+  };     
   constructor(props) {
     super(props);
     this.state = {
@@ -41,9 +36,6 @@ export default class SignInScreen extends React.Component {
   uploadPhoto(){
     var options = {
       title: 'Select Avatar',
-      // customButtons: [
-      //   {name: 'fb', title: 'Choose Photo from Facebook'},
-      // ],
       storageOptions: {
         skipBackup: true,
         path: 'images'
@@ -62,18 +54,11 @@ export default class SignInScreen extends React.Component {
                 console.log('User tapped custom button: ', response.customButton);
               }
               else {
-                // let source = { uri: response.uri };
-            
-                // You can also display the image using data:
                let source = { uri: 'data:image/jpeg;base64,' + response.data };
-                // let source = 'data:image/jpeg;base64,' + response.data;
                 this.setState({
-                  // avatarSource:source,
-                  imageSrc:response,
+                 imageSrc:response,
                   file:response.fileName,
                 });
-                // alert("Uploading");
-                // this.upload(source)
                 this.uploadImage(response.uri,response.fileName)
                 .then(url => {this.setState({avatarSource: url}) })
                 .then(alert('Upload Successfull!!! Press SignUP to continue '))
@@ -214,8 +199,7 @@ export default class SignInScreen extends React.Component {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
   } 
   componentDidMount() {
-    // this.listenForItems(this.chatRef);
-    BackHandler.addEventListener('hardwareBackPress', this.onBackPress.bind(this));
+      BackHandler.addEventListener('hardwareBackPress', this.onBackPress.bind(this));
   }
     onBackPress(){
      this.props.navigation.navigate('Home');
@@ -280,10 +264,8 @@ var styles = StyleSheet.create({
     marginTop: 25,
   },
   emptyBox: {
-  //  borderColor: '#e71636',
     borderColor: 'red',
    borderWidth: 2.0,
-   // backgroundColor: 'red',
   },
   view: {
     textAlign: "center",
@@ -293,7 +275,6 @@ var styles = StyleSheet.create({
      inputbox: {
       textAlign: "center",
       color:'white',
-      // borderColor:'white',
       fontWeight:'bold',
       fontSize:20, 
     },
@@ -309,7 +290,6 @@ var styles = StyleSheet.create({
       alignItems: 'center',
     } ,
      Image: {
-      // justifyContent :'center',
        flex:1,
        alignSelf:'center',  
        width:'100%' ,
@@ -317,8 +297,7 @@ var styles = StyleSheet.create({
       },
       button :{
         fontWeight:'bold',
-      //  fontSize:25,
-        color:'white',
+     color:'white',
      alignSelf:'center',
      justifyContent:'center',
      borderColor:'white',
@@ -327,8 +306,7 @@ var styles = StyleSheet.create({
       },
       text:{
         fontWeight:'bold',
-        //  fontSize:25,
-          color:'white',
+       color:'white',
        alignSelf:'center',
        justifyContent:'center',
        borderColor:'white',

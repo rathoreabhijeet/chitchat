@@ -10,7 +10,6 @@ import { Container,Body, Form, Item,Input, Label,Button, Text ,Header,
    import ProfileScreen from './ProfileScreen';
    import UserProfileScreen from './UserProfileScreen';
    import firebaseApp from './Firebase';
-   import CallScreen from './CallScreen';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -19,8 +18,6 @@ export default class HomeScreen extends React.Component {
   };
   async Login(email, password) {
       const { navigate } = this.props.navigation; 
-      // this.setState({animating: true});
-      // this.toggleLoader()
     if (email =='' || password== '')
     {
       this.setState({hght:0,opac:0});
@@ -104,7 +101,6 @@ onBackPress(){
       <Content>
       <ScrollView overScrollMode={'auto'}>
       <Image source={ require('./pics/back.png') } style={{alignSelf:'center'}} /> 
-      {/* <Image source={{uri :'https://firebasestorage.googleapis.com/v0/b/chitchat-f147c.appspot.com/o/back.png?alt=media&token=05cc9bbe-4417-42ed-af91-dbd53cd739f9'}}/> */}
         <Text></Text>
         <Form>
         <TextInput placeholder="Email" placeholderTextColor="white" keyboardType="email-address"
@@ -143,7 +139,6 @@ onBackPress(){
           </Button>
      </ScrollView>
         </Content>
-        {/* </Image> */}
       </Container>
     );
   }

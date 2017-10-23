@@ -6,17 +6,14 @@ import RNFetchBlob from 'react-native-fetch-blob';
 import { StackNavigator,} from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 var ImagePicker = require('react-native-image-picker');
-// Prepare Blob support
+
 const Blob = RNFetchBlob.polyfill.Blob
 const fs = RNFetchBlob.fs
 window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
 window.Blob = Blob
  var URL;
- /////////
-
 export default class UserProfileScreen extends React.Component {
     static navigationOptions = ({ navigation }) => ({
-     // title: `${navigation.state.params.user}`,
     header:null,
     });
    
@@ -80,18 +77,11 @@ export default class UserProfileScreen extends React.Component {
                   console.log('User tapped custom button: ', response.customButton);
                 }
                 else {
-                  // let source = { uri: response.uri };
-              
-                  // You can also display the image using data:
                  let source = { uri: 'data:image/jpeg;base64,' + response.data };
-                  // let source = 'data:image/jpeg;base64,' + response.data;
                   this.setState({
-                    // avatarSource:source,
                     imageSrc:response,
                     file:response.fileName,
                   });
-                  // alert("Uploading");
-                  // this.upload(source)
                   this.uploadImage(response.uri,response.fileName)
                   .then(url => {console.log(url),this.setState({avatarSource: url}) },
                   
@@ -122,11 +112,9 @@ setTimeout(() => firebaseApp.database().ref('user/'+userId).update({ ImageURL: t
                     })
                     .then((url) => {
                       resolve(url);
-                      // this.setState({hght:0,opac:0});
                     })
                     .catch((error) => {
                       reject(error);
-                      // this.setState({hght:0,opac:0});
                   })
                 })
             }  
@@ -202,9 +190,7 @@ setTimeout(() => firebaseApp.database().ref('user/'+userId).update({ ImageURL: t
         </TouchableOpacity>
         <Text style={styles.title}>{name}</Text>        
       </View>
-    )}
-    scrollableViewStyle={{ backgroundColor: '#ece5dd' }}
-  >
+    )}  scrollableViewStyle={{ backgroundColor: '#ece5dd' }} >
 
     <View style={styles.card}>
       <View style={styles.row}>
@@ -247,11 +233,6 @@ setTimeout(() => firebaseApp.database().ref('user/'+userId).update({ ImageURL: t
           <Text style={styles.text}>{Phone_No}</Text>
           <Text style={styles.subText}>Mobile</Text>
         </View>
-        {/* <View style={{ flexDirection: 'row' }}>
-          <Icon name="chat" color="#075e54" size={23} style={{ padding: 5 }} />
-          <Icon name="call" color="#075e54" size={23} style={{ padding: 5 }} />
-          <Icon name="videocam" color="#075e54" size={23} style={{ padding: 5 }} />
-        </View> */}
       </View>
     </View>
   </ParallaxView>

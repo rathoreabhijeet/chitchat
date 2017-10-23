@@ -27,18 +27,14 @@ listenForItems(userRef) {
   userRef.on('value', (snap) => {    
     var user = [];
     snap.forEach((child) => {
-      // if (userId != child.val().UID)
-      // {
      user.push({
       name: child.val().Name,
       url: child.val().ImageURL,
       phone:child.val().Phone_No,
       uid:child.val().UID,
       _key: child.key,
-      status:child.val().status
-     
+      status:child.val().status     
     });
- // }
     });
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(user.reverse())
@@ -48,10 +44,7 @@ listenForItems(userRef) {
 
 componentDidMount() {
   this.listenForItems(this.userRef);
-  // BackHandler.addEventListener('hardwareBackPress', this.onBackPress.bind(this));
 }
-
-
 _renderItem(Userdata) {
   const { navigate } = this.props.navigation;
   return (
