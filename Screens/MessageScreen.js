@@ -6,7 +6,7 @@ import firebaseApp from './Firebase';
 import InvertibleScrollView from 'react-native-invertible-scroll-view';
 import { NavigationActions } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
+import AutoScroll from 'react-native-auto-scroll';
 var user = firebaseApp.auth().currentUser;
 var senderId,receiverId;
 const { width, height } = Dimensions.get('window');
@@ -195,8 +195,9 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
         <Right>
           </Right>
           </Header>
-          <Content ><ScrollView >
-         <ListView 
+          <Content >
+            {/* <ScrollView > */}
+          <AutoScroll><ListView 
               enableEmptySections
               //noScroll
              renderScrollComponent={props =>
@@ -204,8 +205,9 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
                 dataSource={this.state.dataSource}
               contentContainerStyle={{ justifyContent: 'flex-end' }}
               renderRow={this._renderItem.bind(this)}
-              style={{ flex: 1 }}/>
-             </ScrollView>
+              style={{ flex: 1 }}/></AutoScroll>
+        
+             {/* </ScrollView> */}
            </Content>        
 
     <Footer style={{backgroundColor:'gray',}} >

@@ -3,15 +3,15 @@ import {  AppRegistry, StyleSheet, Navigator, Image,
    NativeModules,DeviceEventEmitter,BackHandler,ToastAndroid} from 'react-native';
 import { Container,} from 'native-base';
 import { StackNavigator,} from 'react-navigation';
-import HomeScreen from './Home';
-import MainScreen from './MainScreen';
-import SignInScreen from './SignInScreen';
-import ChatScreen from './ChatScreen';
-import ContactScreen from './ContactScreen'
-import MessageScreen from './MessageScreen';
-import ProfileScreen from './ProfileScreen';
-import UserProfileScreen from './UserProfileScreen';
-import firebaseApp from './Firebase';
+import HomeScreen from './Screens/Home';
+import MainScreen from './Screens/MainScreen';
+import SignInScreen from './Screens/SignInScreen';
+import ChatScreen from './Screens/ChatScreen';
+import ContactScreen from './Screens/ContactScreen'
+import MessageScreen from './Screens/MessageScreen';
+import ProfileScreen from './Screens/ProfileScreen';
+import UserProfileScreen from './Screens/UserProfileScreen';
+import firebaseApp from './Screens/Firebase';
 
 class TestScreen extends React.Component {  
  static navigationOptions = {
