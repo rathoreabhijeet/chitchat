@@ -30,7 +30,7 @@ export default class ProfileScreen extends React.Component {
     windowHeight={400}
     header={(
       <View>
-        <Text style={styles.title}>{user.name}</Text>
+        <Text style={styles.title}>aa</Text>
       </View>
     )}
     scrollableViewStyle={{ backgroundColor: '#ece5dd' }}
@@ -78,13 +78,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 25,
-    color: '#fff',
+    color: 'black',
     fontWeight: '600',
-    marginTop: 270,
+    marginTop: '90%',
     padding: 20,
   },
   card: {
-    marginTop: 8,
+    marginTop: 5,
   },
   row: {
     padding: 10,

@@ -1,10 +1,11 @@
 import React from 'react';
 import { Container, Header,Footer,FooterTab,Body,Title,Content,Card,CardItem,Form,Item,Input,Label,Button,
-Icon,Text,View,Div,Left,Right,ListItem ,Thumbnail,} from 'native-base';
+Text,View,Div,Left,Right,ListItem ,Thumbnail,Fab} from 'native-base';
 import {  AppRegistry, StyleSheet,TouchableOpacity,ListView,BackHandler,ScrollView,Dimensions} from 'react-native';
 import firebaseApp from './Firebase';
 import InvertibleScrollView from 'react-native-invertible-scroll-view';
 import { NavigationActions } from 'react-navigation';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 var user = firebaseApp.auth().currentUser;
 var senderId,receiverId;
@@ -24,9 +25,9 @@ export default class MessageScreen extends React.Component {
       }),
       errors: [],
     }
-    var Ukey;
-    var keyDb;
-    var Rkey= this.props.navigation.state.params.Rid;
+    var Ukey; // current user key
+    var keyDb; // current user key + user receving message key 
+    var Rkey= this.props.navigation.state.params.Rid; //user receving message key 
     var userId = firebaseApp.auth().currentUser.uid;
     receiverId=Rkey;
     senderId=userId;
@@ -64,14 +65,14 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
     }
     if(message != '')
     {
-    firebaseApp.database().ref('ChatMessages/'+keyDb+'/').push({
+    firebaseApp.database().ref('ChatMessages/'+keyDb+'/').push({ //store messages in database
       text:message,
       date:date,
       senderId:Ukey,
       receiverId:Rkey,
       read:false,
     });
-    firebaseApp.database().ref('Unread/'+Rkey+'/'+Ukey+'/').push({
+    firebaseApp.database().ref('Unread/'+Rkey+'/'+Ukey+'/').push({ //store the unread messages
       text:message,
     })
 
@@ -114,7 +115,7 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
       }  
   }
 
-  listenForItems(chatRef) {
+  listenForItems(chatRef) { //get all the messages stored in database
     
     chatRef.on('value', (snap) => {    
       var messages = [];
@@ -139,11 +140,11 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
   }
 
   _renderItem(msg)
-   { 
+   {             //display messages between two users
     var userId = firebaseApp.auth().currentUser.uid;
     if(msg.sender == userId)
     {
-      return (
+      return (  //messages send by current user(self)
     <View style={styles.rightMsg} >
     <View style={styles.rightBlock} >   
       <Text style={styles.rightTxt}>{msg.message}</Text>
@@ -153,7 +154,7 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
         );
     }
     else    {
-      return ( 
+      return (  // messages send by other person (receiver)
         <View style={styles.eachMsg}>
          <View style={styles.msgBlock}>
               <Text style={styles.msgTxt}>{msg.message}</Text>
@@ -185,11 +186,11 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
            <Header style={styles.header}>          
            <Left>
            <TouchableOpacity onPress={() =>navigate('profile',{status:user.status,name:user.username,phone:user.phone,url:user.url})}>
-<Thumbnail source={{ uri: user.url }} /></TouchableOpacity>
+<Thumbnail source={{ uri: user.url }} style={{margin:5,}}/></TouchableOpacity>
 </Left>
 <TouchableOpacity onPress={() =>navigate('profile',{status:user.status,name:user.username,phone:user.phone,url:user.url})}>
 
-<Body><Text style={styles.header}>{user.username}</Text></Body>
+<Body><Text style={{backgroundColor:"#075e54",fontSize:25,color:"#fff",marginTop:12}}>{user.username}</Text></Body>
 </TouchableOpacity>
         <Right>
           </Right>
@@ -207,17 +208,16 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
              </ScrollView>
            </Content>        
 
-    <Footer style={{height:80}}>
-               <Item regular style={{width:'100%',backgroundColor:'white'}}>              
- <Input multiline = {true}  numberOfLines = {3} style={{ flexDirection: 'row'}}
+    <Footer style={{backgroundColor:'gray',}} >
+               <Item regular style={{width:'100%',backgroundColor:'white',}}>              
+ <Input multiline = {true}  numberOfLines = {2} style={{ }}
    onChangeText={(message) => this.setState({ message })}   value={this.state.message} />
-
-         <Button transparent iconRight onPress={() => this.sendMessage(this.state.message,date,Ukey,Rkey)}>
-                   <Text>Send</Text>
-                      <Icon name='arrow-forward' />
+   
+         <Button style={{ backgroundColor: '#075e54',width:45,borderRadius:50,paddingLeft:13,margin:4}} iconRight onPress={() => this.sendMessage(this.state.message,date,Ukey,Rkey)}>
+                     <Icon name="send" color="white" size={25}/>
                    </Button>
-               </Item>              
-               </Footer> 
+               </Item>
+            </Footer> 
       </Container>
     );
   }
@@ -232,6 +232,7 @@ var styles = StyleSheet.create({
 backgroundColor:"#075e54",
 fontSize:25,
 color:"#fff",
+height:65,
     },
     title: {
       fontWeight: 'bold',fontFamily: "vincHand",

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import {   StyleSheet, Navigator, View,Image,TextInput,TouchableOpacity,BackHandler,ToastAndroid} from 'react-native';
-import { Container,Footer,Form, Item,Button, Text ,Content,Header, Right,Left,Icon,Input} from 'native-base';
+import { Container,Footer,Form, Item,Button, Text ,Content,Header, Right,Left,Input} from 'native-base';
 import { StackNavigator,} from 'react-navigation';
 import * as firebase from "firebase";
 import HomeScreen from './Home';
 import ChatScreen from './ChatScreen';
 import ContactScreen from './ContactScreen';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
+import Icon from 'react-native-vector-icons/Entypo';
 import firebaseApp from './Firebase';
 import { Actions } from 'react-native-router-flux'
 export default class MainScreen extends React.Component {  
@@ -14,7 +15,7 @@ export default class MainScreen extends React.Component {
       title: 'ChitChat', 
       header:null,
     };
-    async Logout(email, password) {
+    async Logout(email, password) { //function to logout current user
       const { navigate } = this.props.navigation; 
        try { 
       firebaseApp.auth().signOut().then(function() {    
@@ -24,7 +25,7 @@ export default class MainScreen extends React.Component {
     catch (error) {
       console.log(error.toString())
    }         
-  }
+  }// logout function closed
     constructor(props) {
       super(props);
       this.state = {
@@ -61,15 +62,15 @@ export default class MainScreen extends React.Component {
      </Left>
  <Right>
  <Button transparent  onPress={() =>navigate('uprofile')}>
-    <Icon name="people"/> 
+    <Icon name="user" size={25} color='white'/> 
     </Button>
     <Button  transparent   onPress={() => this.Logout()} >
-    <Icon  name="log-out"  />  
+    <Icon  name="log-out" size={25} color='white' />  
     </Button> 
      </Right>
      </Header>
             <ScrollableTabView
-               style={{ borderColor: '#fff' }}
+               style={{ borderColor: '#fff'}}
                tabBarUnderlineStyle={style = { backgroundColor: '#fff' }}
                tabBarBackgroundColor="#075e54"
                tabBarActiveTextColor="#fff"

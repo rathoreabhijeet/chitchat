@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {  AppRegistry,StatusBar, StyleSheet, Navigator, View,Image,ToastAndroid,TextInput,ScrollView,ActivityIndicator,BackHandler} from 'react-native';
+import {  AppRegistry,StatusBar, StyleSheet, Navigator, View,Image,ToastAndroid,TextInput,ScrollView,
+  ActivityIndicator,BackHandler,Dimensions} from 'react-native';
 import { Container,Body, Form, Item,Input, Label,Button, Text ,Header,
    Content,Left, Right, Icon, Toast} from 'native-base';
    import { StackNavigator,} from 'react-navigation';
@@ -9,14 +10,16 @@ import { Container,Body, Form, Item,Input, Label,Button, Text ,Header,
    import MessageScreen from './MessageScreen';
    import ProfileScreen from './ProfileScreen';
    import UserProfileScreen from './UserProfileScreen';
+   import ResponsiveImage from 'react-native-responsive-image';
    import firebaseApp from './Firebase';
 
+   const { width, height } = Dimensions.get('window');//get the dimension of the device screen
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     title: 'HOME',
     header:null,
   };
-  async Login(email, password) {
+  async Login(email, password) { //function for user login
       const { navigate } = this.props.navigation; 
     if (email =='' || password== '')
     {
@@ -27,7 +30,7 @@ alert('Enter Email and Password');
       try { 
         this.setState({hght:80,
           opac:1});
-         firebaseApp.auth().signInWithEmailAndPassword(email, password)
+         firebaseApp.auth().signInWithEmailAndPassword(email, password)  //firebase signIn authenciation
            .then((firebaseUser)=> {
             //alert('login in');
             navigate('Main');
@@ -37,7 +40,7 @@ alert('Enter Email and Password');
               hght:0,opac:0
             }); 
   
-          }, (error)=>{
+          }, (error)=>{ // errror handler if error accur during login
             this.setState({hght:0,opac:0});
             var errorCode = error.code;
             var errorMessage = error.message;
@@ -100,20 +103,20 @@ onBackPress(){
       <Container style={{ backgroundColor:'#075e54'}}>
       <Content>
       <ScrollView overScrollMode={'auto'}>
-      <Image source={ require('./pics/back.png') } style={{alignSelf:'center'}} /> 
+      <ResponsiveImage source={ require('./pics/back.png') } style={{alignSelf:'center',}} initWidth="238" initHeight="238"/> 
         <Text></Text>
         <Form>
-        <TextInput placeholder="Email" placeholderTextColor="white" keyboardType="email-address"
+        <TextInput placeholder="Email" placeholderTextColor="gray" keyboardType="email-address"
         onChangeText={(email) => this.setState({ email })}   value={this.state.email}  style={styles.inputbox} returnKeyType={'next'}
         onSubmitEditing={()=>this.pswdInput.focus()} />
-        <TextInput placeholder="Password" secureTextEntry ref={(input) => { this.pswdInput = input; }} placeholderTextColor="white" 
+        <TextInput placeholder="Password" secureTextEntry ref={(input) => { this.pswdInput = input; }} placeholderTextColor="gray" 
  onChangeText={(password) => this.setState({password})} returnKeyType={'go'} value={this.state.password} style={styles.inputbox}
  onSubmitEditing={()=> this.Login(this.state.email,this.state.password)}/>
              </Form> 
           <Text></Text>
              <Button rounded bordered onPress={() =>{ this.Login(this.state.email,this.state.password)}} style={styles.button}>
           <Text style={styles.text}>
-            LOGIN
+            LOG  IN
           </Text>
         </Button>
 
@@ -124,9 +127,7 @@ onBackPress(){
           style={{height:this.state.hght,opacity:this.state.opac}}
           size={100}
         />
-  </View>
-         
-        <Text></Text>
+  </View> 
         <View >
         <Text  style={styles.view}>Not Registered?</Text>
           <Text style={styles.view}> Then Please Click on</Text>
@@ -165,8 +166,10 @@ var styles = StyleSheet.create({
     alignItems: 'center',
   } ,
   button :{
-    fontWeight:'bold',
+   // fontWeight:'bold',
   //  fontSize:25,
+  padding:5,
+  margin:10,
     color:'white',
  alignSelf:'center',
  justifyContent:'center',
@@ -178,10 +181,11 @@ color:'white',
   },
   inputbox: {
     color:'white',
-   // borderColor:'white',
+   borderColor:'white',
     fontWeight:'bold',
     fontSize:20,
-    textAlign: "center",
+    padding:10,
+    //textAlign: "center",
    // borderBottomWidth:2, 
   },
   text:{

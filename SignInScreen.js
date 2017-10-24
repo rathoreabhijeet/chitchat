@@ -7,7 +7,8 @@ import { StackNavigator, } from 'react-navigation';
 import HomeScreen from './Home';
 import MainScreen from './MainScreen';
 import firebaseApp from './Firebase';
-import RNFetchBlob from 'react-native-fetch-blob'
+import ResponsiveImage from 'react-native-responsive-image';
+import RNFetchBlob from 'react-native-fetch-blob';
 var ImagePicker = require('react-native-image-picker');
 const Blob = RNFetchBlob.polyfill.Blob
 const fs = RNFetchBlob.fs
@@ -33,65 +34,7 @@ export default class SignInScreen extends React.Component {
       opac:0,
     }
   }
-  uploadPhoto(){
-    var options = {
-      title: 'Select Avatar',
-      storageOptions: {
-        skipBackup: true,
-        path: 'images'
-      }
-    };
-  ImagePicker.showImagePicker(options, (response) => {
-              console.log('Response = ', response);
-            
-              if (response.didCancel) {
-                console.log('User cancelled image picker');
-              }
-              else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-              }
-              else if (response.customButton) {
-                console.log('User tapped custom button: ', response.customButton);
-              }
-              else {
-               let source = { uri: 'data:image/jpeg;base64,' + response.data };
-                this.setState({
-                 imageSrc:response,
-                  file:response.fileName,
-                });
-                this.uploadImage(response.uri,response.fileName)
-                .then(url => {this.setState({avatarSource: url}) })
-                .then(alert('Upload Successfull!!! Press SignUP to continue '))
-        .catch(error => console.log(error))
-              }           
-            });   }
-  uploadImage(uri,name, mime = 'application/octet-stream') {
-              return new Promise((resolve, reject) => {
-                const uploadUri = uri;
-                let uploadBlob = null;
-          
-                const imageRef = firebaseApp.storage().ref('images/').child(name)
-          
-                fs.readFile(uploadUri, 'base64')
-                  .then((data) => {
-                    return Blob.build(data, { type: `${mime};BASE64` })
-                  })
-                  .then((blob) => {
-                    uploadBlob = blob
-                    return imageRef.put(blob, { contentType: mime })
-                  })
-                  .then(() => {
-                    uploadBlob.close()
-                    return imageRef.getDownloadURL()
-                  })
-                  .then((url) => {
-                    resolve(url)
-                  })
-                  .catch((error) => {
-                    reject(error)
-                })
-              })
-          }
+ 
   async signup(name,age,phone,email,password1,password2,avatarSource) {
     this.setState({namecss: false})
     this.setState({agecss: false})
@@ -212,19 +155,19 @@ export default class SignInScreen extends React.Component {
     return (
       <Container style={{ backgroundColor:'#075e54'}}>        
          <Content><ScrollView>
-       <Image source={ require('./pics/back.png') } style={{alignSelf:'center'}} />       
-      <TextInput placeholder="Name" ref="name"  placeholderTextColor="white" transparent style={[styles.inputbox, this.state.namecss && styles.emptyBox]} maxLength = {15} returnKeyType="next"
+         <ResponsiveImage source={ require('./pics/back.png') } style={{alignSelf:'center',}} initWidth="238" initHeight="238"/>        
+      <TextInput placeholder="Name" ref="name"  placeholderTextColor="gray" transparent style={[styles.inputbox, this.state.namecss && styles.emptyBox]} maxLength = {15} returnKeyType="next"
            onChangeText={(name) => this.setState({ name })}  value={this.state.name} autoFocus={true}
            onSubmitEditing={() => this.ageInput.focus()}/>
-       <TextInput placeholder="Age" ref={(input) => { this.ageInput = input; }} placeholderTextColor="white" transparent style={[styles.inputbox, this.state.agecss && styles.emptyBox]} keyboardType='numeric' maxLength = {2} returnKeyType="next"
+       <TextInput placeholder="Age" ref={(input) => { this.ageInput = input; }} placeholderTextColor="gray" transparent style={[styles.inputbox, this.state.agecss && styles.emptyBox]} keyboardType='numeric' maxLength = {2} returnKeyType="next"
            onChangeText={(age) => this.setState( {age })}  value={this.state.age} onSubmitEditing={() => this.phoneInput.focus()} /> 
-       <TextInput placeholder="Phone No." ref={(input) => { this.phoneInput = input; }} placeholderTextColor="white" transparent style={[styles.inputbox, this.state.phonecss && styles.emptyBox]} keyboardType='numeric' maxLength = {10} returnKeyType="next"
+       <TextInput placeholder="Phone No." ref={(input) => { this.phoneInput = input; }} placeholderTextColor="gray" transparent style={[styles.inputbox, this.state.phonecss && styles.emptyBox]} keyboardType='numeric' maxLength = {10} returnKeyType="next"
           onChangeText={(phone) => this.setState({ phone })}   value={this.state.phone} onSubmitEditing={() => this.emailInput.focus()}/> 
-       <TextInput placeholder="Email" ref={(input) => { this.emailInput = input; }} placeholderTextColor="white" transparent style={[styles.inputbox, this.state.emailcss && styles.emptyBox]} keyboardType="email-address" returnKeyType="next"
+       <TextInput placeholder="Email" ref={(input) => { this.emailInput = input; }} placeholderTextColor="gray" transparent style={[styles.inputbox, this.state.emailcss && styles.emptyBox]} keyboardType="email-address" returnKeyType="next"
            onChangeText={(email) => this.setState({ email })} value={this.state.email} onSubmitEditing={() => this.psdInput.focus()} />
-       <TextInput placeholder="Password" ref={(input) => { this.psdInput = input; }} placeholderTextColor="white" secureTextEntry transparent style={[styles.inputbox, this.state.password1css && styles.emptyBox]} returnKeyType="next"
+       <TextInput placeholder="Password" ref={(input) => { this.psdInput = input; }} placeholderTextColor="gray" secureTextEntry transparent style={[styles.inputbox, this.state.password1css && styles.emptyBox]} returnKeyType="next"
            onChangeText={(password1) => this.setState({ password1 })} value={this.state.password1} onSubmitEditing={() => this.psd2Input.focus()} />
-       <TextInput placeholder="Confirm Password" ref={(input) => { this.psd2Input = input; }} placeholderTextColor="white" secureTextEntry transparent style={[styles.inputbox, this.state.password2css && styles.emptyBox]} 
+       <TextInput placeholder="Confirm Password" ref={(input) => { this.psd2Input = input; }} placeholderTextColor="gray" secureTextEntry transparent style={[styles.inputbox, this.state.password2css && styles.emptyBox]} 
            onChangeText={(password2) => this.setState({ password2 })} value={this.state.password2} returnKeyType={'go'}
            onSubmitEditing={()=>this.signup(this.state.name,this.state.age,
                  this.state.phone,this.state.email,this.state.password1,this.state.password2,this.state.avatarSource)} />
@@ -244,6 +187,8 @@ export default class SignInScreen extends React.Component {
            SIGN UP
           </Text>
         </Button>
+        <Text  style={styles.text}>Already have Account ?</Text>
+        <Text style={{color:'#000099',marginBottom:10,textAlign:'center',fontSize:26}} onPress={() => navigate('Home')}>Login</Text>
             </ScrollView>    
         </Content>
       </Container>
@@ -257,6 +202,10 @@ var styles = StyleSheet.create({
     borderColor: 'white',
 
   }, 
+  text: {
+    textAlign: "center",
+    color:'white',
+      },
   title: {
     fontWeight: 'bold', fontFamily: "vincHand",
     fontSize: 30,
@@ -273,10 +222,11 @@ var styles = StyleSheet.create({
     fontWeight:'bold',
      },
      inputbox: {
-      textAlign: "center",
+      //textAlign: "center",
       color:'white',
       fontWeight:'bold',
       fontSize:20, 
+      padding:10,
     },
     overlay: {
       flex: 1,
@@ -297,6 +247,7 @@ var styles = StyleSheet.create({
       },
       button :{
         fontWeight:'bold',
+        margin:10,
      color:'white',
      alignSelf:'center',
      justifyContent:'center',

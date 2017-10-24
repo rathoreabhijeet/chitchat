@@ -52,7 +52,7 @@ export default class UserProfileScreen extends React.Component {
      this.state.status=status;
     }
  
-    uploadPhoto(userId){
+    uploadPhoto(userId){ //function to upload profile photo
       var pic;
       var options = {
         title: 'Select Avatar',
@@ -61,7 +61,7 @@ export default class UserProfileScreen extends React.Component {
           path: 'images'
         }
       };
-    ImagePicker.showImagePicker(options, (response) => {
+    ImagePicker.showImagePicker(options, (response) => { 
                 console.log('Response = ', response);
                 this.setState({hght:80,
                   opac:1});
@@ -90,7 +90,7 @@ setTimeout(() => firebaseApp.database().ref('user/'+userId).update({ ImageURL: t
           .catch(error => console.log(error))
                 }          
               });   }
-    uploadImage(uri,name, mime = 'application/octet-stream') {
+    uploadImage(uri,name, mime = 'application/octet-stream') { // function to upload image to firebase
                 return new Promise((resolve, reject) => {
                   const uploadUri = uri;
                   let uploadBlob = null;
@@ -185,7 +185,7 @@ setTimeout(() => firebaseApp.database().ref('user/'+userId).update({ ImageURL: t
 </View>
         <TouchableOpacity style={styles.header} onPress={() => this.uploadPhoto(userId)}>
           <Icon name="edit" color="#075e54" size={33}
-            style={{ paddingLeft: 10}}
+            style={{ paddingLeft: 10,paddingRight:20,paddingTop:10}}
           />
         </TouchableOpacity>
         <Text style={styles.title}>{name}</Text>        
@@ -248,9 +248,9 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 25,
-    color: '#fff',
+    color: 'black',
     fontWeight: '600',
-    marginTop: 270,
+    marginTop: '80%',
     padding: 20,
   },
   card: {
@@ -275,7 +275,8 @@ const styles = StyleSheet.create({
   },
   encrypt: {
     height: 70,
-    paddingHorizontal: 20,
+    padding:30,
+   //paddingHorizontal: 20,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

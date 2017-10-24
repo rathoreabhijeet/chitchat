@@ -7,6 +7,7 @@ import HomeScreen from './Home';
 import MainScreen from './MainScreen';
 import SignInScreen from './SignInScreen';
 import ChatScreen from './ChatScreen';
+import ContactScreen from './ContactScreen'
 import MessageScreen from './MessageScreen';
 import ProfileScreen from './ProfileScreen';
 import UserProfileScreen from './UserProfileScreen';
@@ -23,7 +24,7 @@ class TestScreen extends React.Component {
     count:0
   }
   }
-componentDidMount() {
+componentDidMount() { // on page load function to check if user is logged In or not
   BackHandler.addEventListener('hardwareBackPress', this.onBackPress.bind(this));
   const { navigate } = this.props.navigation;
   firebaseApp.auth().onAuthStateChanged(function(user) {
@@ -32,6 +33,7 @@ componentDidMount() {
       navigate('Main');
     }
     else {
+      //user is not signed in navigate to login page
       navigate('Home');
     }
   });
@@ -85,6 +87,7 @@ const ChitChat = StackNavigator({
  Main :{screen : MainScreen},
  Message:{screen:MessageScreen},
  profile:{screen: ProfileScreen},
- uprofile:{screen: UserProfileScreen}
+ uprofile:{screen: UserProfileScreen},
+ contact:{screen: ContactScreen}
 }); 
 AppRegistry.registerComponent('ChitChat', () => ChitChat);

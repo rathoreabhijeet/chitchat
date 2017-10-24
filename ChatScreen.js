@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Container, Header, Content, List,Title,Icon, ListItem,Segment,Button, Left, Body, 
-  Right, Thumbnail, Text,Badge } from 'native-base';
-import {  AppRegistry, StyleSheet,ListView,ToastAndroid,Dimensions} from 'react-native';
+import { Container, Header, Content, List,Title, ListItem,Segment,Button, Left, Body,Footer, 
+  Right, Thumbnail, Text,Badge,Fab } from 'native-base';
+import {  AppRegistry, StyleSheet,ListView,ToastAndroid,Dimensions,TouchableOpacity,ScrollView} from 'react-native';
 import firebaseApp from './Firebase';
 import MessageScreen from './MessageScreen';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
 var PushNotification = require('react-native-push-notification');
 var totalUnread;
 PushNotification.configure({  
@@ -17,6 +19,7 @@ PushNotification.configure({
       requestPermissions: true,
   });
 const { width, height } = Dimensions.get('window');
+//component for chatScreen.it displays list of users you chat with
 export default class ChatScreen extends Component {
  
   static navigationOptions = {
@@ -32,10 +35,10 @@ export default class ChatScreen extends Component {
       rowHasChanged: (row1, row2) => row1 !== row2,
     })
   }
-  var Ukey = firebaseApp.auth().currentUser.uid;
-  this.userRef =firebaseApp.database().ref().child('user');
-  this.ChatwithRef =firebaseApp.database().ref('user/'+Ukey).child('ChatWith');
-}
+  var Ukey = firebaseApp.auth().currentUser.uid; // current user ID
+  this.userRef =firebaseApp.database().ref().child('user'); //reference to user data in database 
+  this.ChatwithRef =firebaseApp.database().ref('user/'+Ukey).child('ChatWith'); //reference to Chat with data stored for each user 
+}// constructor closed
 
 pushNotify(subT,bigT,mCount,groupT){
   PushNotification.localNotification({
@@ -64,20 +67,20 @@ pushNotify(subT,bigT,mCount,groupT){
 });
 }
 
-listenForItems(userRef,ChatwithRef) {
+listenForItems(userRef,ChatwithRef) { // function to get list of users, current user chat with.
 
   var chatwith=[]; 
-  ChatwithRef.on('value', (snap) => {   
+  ChatwithRef.on('value', (snap) => {  //read the user ID's in Chatwith table 
     snap.forEach((child) => { 
       chatwith.push(child.val().ID );      
     });
   });   
 
-  userRef.on('value', (snap) => {    
+  userRef.on('value', (snap) => {    //read the data of all users 
     var user = [];
     snap.forEach((child) => {
     
-        if(chatwith.includes(child.val().UID))
+        if(chatwith.includes(child.val().UID)) //get the users data whose ID's are in chatWith table.
         {
           user.push({
             name: child.val().Name,
@@ -97,12 +100,12 @@ listenForItems(userRef,ChatwithRef) {
   });
 }
 
-componentDidMount() {
+componentDidMount() {  //on pageload call the function to get list of users in chatwith table
   this.listenForItems(this.userRef,this.ChatwithRef);
   PushNotification.cancelAllLocalNotifications()
 }
 
-_renderItem(Userdata) {
+_renderItem(Userdata) {  //function to dispaly details of particular user in listView
   const { navigate } = this.props.navigation;
   Userdata.count = 0;
   var opac=0;
@@ -131,10 +134,11 @@ _renderItem(Userdata) {
   totalUnread+=Userdata.count;
   });
 
-     return (      
-      <ListItem avatar Userdata={Userdata} style={{margin:0,width:width,marginLeft:0}} onPress={() => navigate('Message',{ Rid:Userdata._key, username: Userdata.name,status:Userdata.status,phone:Userdata.phone,url:Userdata.url })}>
+     return (    //return listItem for each user in chatwith table
+       
+      <ListItem avatar Userdata={Userdata} style={{margin:0,marginLeft:0}} onPress={() => navigate('Message',{ Rid:Userdata._key, username: Userdata.name,status:Userdata.status,phone:Userdata.phone,url:Userdata.url })}>
       <Left>
-        <Thumbnail source={{ uri:Userdata.url  }} style={{marginLeft:3}}/>
+        <Thumbnail source={{ uri:Userdata.url  }} style={{marginLeft:8,borderWidth:1,borderColor:'gray',margin:3}}/>
       </Left><Body>
         <Text>{Userdata.name}</Text></Body>
         <Badge style={{marginTop:15,margin:5,backgroundColor:'#075e54',opacity:opac}}>
@@ -142,28 +146,53 @@ _renderItem(Userdata) {
           </Badge>
       </ListItem>
     );  
-}
+}// _renderItem function closed
 
 render() {
-
+  const { navigate } = this.props.navigation;
     return (
-      <Container>  
-        <Content>
+      <Container  style={styles.container}>  
+        <Content  style={styles.container}>
+          <ScrollView>
         <ListView dataSource={this.state.dataSource}
-renderRow={this._renderItem.bind(this)} enableEmptySections={true} style={{width:width}}>                      
-          </ListView>  
+renderRow={this._renderItem.bind(this)} enableEmptySections={true} style={{ marginTop:5,}}>                      
+          </ListView>
+         </ScrollView>        
         </Content>
+        <Fab
+            active={true}
+            direction="up"
+            containerStyle={{ }}
+            style={{ backgroundColor: '#075e54' }}
+            position="bottomRight"
+            onPress={() =>navigate('contact')}>
+            <Icon name="chat" color="white" size={35}/></Fab>
       </Container>
     );
   }
-}
+} // component closed
 var styles = StyleSheet.create({
-  
+  container: {
+    borderWidth: 0,
+    borderColor: 'white',
+    backgroundColor:'white',   
+  },
   title: {
     fontWeight: 'bold',fontFamily: "vincHand",
     fontSize: 30,
     textAlign: "center",
     marginTop:25,    
   }, 
+  addicon:{
+    opacity:4,
+    borderRadius:50,
+    borderWidth:2,
+    borderColor:'#075e54',
+    flex: 1,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+  }
 });
 
