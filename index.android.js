@@ -13,7 +13,7 @@ import ProfileScreen from './Screens/ProfileScreen';
 import UserProfileScreen from './Screens/UserProfileScreen';
 import firebaseApp from './Screens/Firebase';
 
-class TestScreen extends React.Component {  
+class FirstScreen extends React.Component {  
  static navigationOptions = {
    title: 'WELCOME',
    header:null, 
@@ -80,7 +80,7 @@ var styles = StyleSheet.create({
 }
 });
 const ChitChat = StackNavigator({
- Test:{screen : TestScreen},
+ first:{screen : FirstScreen},
  Home: { screen: HomeScreen },
  SignIn: { screen: SignInScreen },
  Chats: {screen: ChatScreen},
