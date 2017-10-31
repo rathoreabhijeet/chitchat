@@ -145,22 +145,24 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
     if(msg.sender == userId)
     {
       return (  //messages send by current user(self)
+     <AutoScroll>
     <View style={styles.rightMsg} >
     <View style={styles.rightBlock} >   
       <Text style={styles.rightTxt}>{msg.message}</Text>
        <Right><Text note style={{color:'grey'}}>{msg.date.substring(16,21)}</Text></Right>                  
     </View>
-    </View>
+    </View></AutoScroll>
         );
     }
     else    {
       return (  // messages send by other person (receiver)
+      <AutoScroll>
         <View style={styles.eachMsg}>
          <View style={styles.msgBlock}>
               <Text style={styles.msgTxt}>{msg.message}</Text>
           <Text note style={{color:'grey'}}>{msg.date.substring(16,21)}</Text>
       </View>
-     </View>
+     </View></AutoScroll>
     );}
       
   
@@ -196,18 +198,18 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
           </Right>
           </Header>
           <Content >
-            {/* <ScrollView > */}
-          <AutoScroll><ListView 
+            <ScrollView  >         
+            <ListView 
               enableEmptySections
               //noScroll
-             renderScrollComponent={props =>
-                <InvertibleScrollView {...props}  />}
+              scrollsToEnd={true}
+            // renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
                 dataSource={this.state.dataSource}
               contentContainerStyle={{ justifyContent: 'flex-end' }}
               renderRow={this._renderItem.bind(this)}
-              style={{ flex: 1 }}/></AutoScroll>
+              style={{ flex: 1 }}/>             
         
-             {/* </ScrollView> */}
+             </ScrollView>
            </Content>        
 
     <Footer style={{backgroundColor:'gray',}} >

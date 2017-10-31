@@ -9,7 +9,6 @@ import ContactScreen from './ContactScreen';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import Icon from 'react-native-vector-icons/Entypo';
 import firebaseApp from './Firebase';
-import { Actions } from 'react-native-router-flux'
 export default class MainScreen extends React.Component {  
     static navigationOptions = {
       title: 'ChitChat', 
