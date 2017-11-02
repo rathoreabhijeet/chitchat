@@ -185,12 +185,13 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
     return (
       <Container style={styles.container} >
          
-           <Header style={styles.header}>          
+           <Header style={styles.header}>
+             <Icon name='arrow-back' size={40} style={styles.icon} onPress={() => this.props.navigation.goBack() } />          
            <Left>
-           <TouchableOpacity onPress={() =>navigate('profile',{status:user.status,name:user.username,phone:user.phone,url:user.url})}>
-<Thumbnail source={{ uri: user.url }} style={{margin:5,}}/></TouchableOpacity>
+           <TouchableOpacity style={styles.photo} onPress={() =>navigate('profile',{status:user.status,name:user.username,phone:user.phone,url:user.url})}>
+<Thumbnail source={{ uri: user.url }} /></TouchableOpacity>
 </Left>
-<TouchableOpacity onPress={() =>navigate('profile',{status:user.status,name:user.username,phone:user.phone,url:user.url})}>
+<TouchableOpacity style={styles.Username} onPress={() =>navigate('profile',{status:user.status,name:user.username,phone:user.phone,url:user.url})}>
 
 <Body><Text style={{backgroundColor:"#075e54",fontSize:25,color:"#fff",marginTop:12}}>{user.username}</Text></Body>
 </TouchableOpacity>
@@ -237,6 +238,20 @@ backgroundColor:"#075e54",
 fontSize:25,
 color:"#fff",
 height:65,
+flexDirection:'row',
+justifyContent:'center',
+alignItems:'center'
+    },
+    icon:{
+      flex:2,
+      color:'white'
+    },
+    photo:{
+      flex:3,
+      alignSelf:'center'
+    },
+    Username:{
+      flex:5
     },
     title: {
       fontWeight: 'bold',fontFamily: "vincHand",

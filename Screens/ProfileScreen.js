@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  BackHandler
-} from 'react-native';
+import {Text, View, TouchableOpacity, StyleSheet,BackHandler} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ParallaxView from 'react-native-parallax-view';
 import { NavigationActions } from 'react-navigation'
@@ -30,7 +24,10 @@ export default class ProfileScreen extends React.Component {
     windowHeight={400}
     header={(
       <View>
-        <Text style={styles.title}>aa</Text>
+        <View>
+      <Icon name='arrow-back' size={40} style={styles.backicon} onPress={() => this.props.navigation.goBack() } />
+        </View>
+        <Text style={styles.title}>{user.name}</Text>
       </View>
     )}
     scrollableViewStyle={{ backgroundColor: '#ece5dd' }}
@@ -82,6 +79,11 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginTop: '90%',
     padding: 20,
+  },
+  backicon:{
+   // flex:2,
+    color:'black',
+    //alignSelf:'flex-start'
   },
   card: {
     marginTop: 5,

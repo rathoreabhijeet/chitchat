@@ -25,7 +25,7 @@ class FirstScreen extends React.Component {
   }
   }
 componentDidMount() { // on page load function to check if user is logged In or not
-  BackHandler.addEventListener('hardwareBackPress', this.onBackPress.bind(this));
+ 
   const { navigate } = this.props.navigation;
   firebaseApp.auth().onAuthStateChanged(function(user) {
     if (user) {
@@ -38,25 +38,7 @@ componentDidMount() { // on page load function to check if user is logged In or 
     }
   });
 } 
-componentWillUnmount() {
-BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-this.setState({
-  count:0,
-})
-}
-onBackPress(){
-if(this.state.count==0){
-ToastAndroid.showWithGravity('Press Back again to exit', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-this.setState({
-  count:1
-});
-setTimeout(() => {this.setState({count:0})}, 3000);
-return true; }
-else{
-BackHandler.exitApp()
-return false;
-}
-}
+
  render() {
    const { navigate } = this.props.navigation;
    return (

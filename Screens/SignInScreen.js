@@ -1,15 +1,15 @@
 import React from 'react';
-import {
-  Container, Header, Footer, Body, Title, Content, Card, CardItem, Form, Item, Label,
+import {Container, Header, Footer, Body, Title, Content, Card, CardItem, Form, Item, Label,Input,
   Button, Icon, Text} from 'native-base';
-import { StyleSheet, TextInput, Image,ScrollView,View,ActivityIndicator,BackHandler} from 'react-native';
+import { StyleSheet, Image,ScrollView,View,ActivityIndicator,BackHandler,Dimensions} from 'react-native';
 import { StackNavigator, } from 'react-navigation';
-import HomeScreen from './Home';
-import MainScreen from './MainScreen';
 import firebaseApp from './Firebase';
 import ResponsiveImage from 'react-native-responsive-image';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import RNFetchBlob from 'react-native-fetch-blob';
 var ImagePicker = require('react-native-image-picker');
+
+const { width, height } = Dimensions.get('window');//get the dimension of the device screen
 const Blob = RNFetchBlob.polyfill.Blob
 const fs = RNFetchBlob.fs
 window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
@@ -77,7 +77,7 @@ export default class SignInScreen extends React.Component {
            {
              const { navigate } = this.props.navigation; 
              try {
-              this.setState({hght:80,
+              this.setState({hght:100,
                 opac:1});
                     await firebaseApp.auth().createUserWithEmailAndPassword(email, password1)
                       .then((firebaseUser) => {
@@ -153,115 +153,167 @@ export default class SignInScreen extends React.Component {
     const { navigate } = this.props.navigation;
     
     return (
-      <Container style={{ backgroundColor:'#075e54'}}>        
-         <Content><ScrollView>
-         <ResponsiveImage source={ require('./pics/back.png') } style={{alignSelf:'center',}} initWidth="238" initHeight="238"/>        
-      <TextInput placeholder="Name" ref="name"  placeholderTextColor="gray" transparent style={[styles.inputbox, this.state.namecss && styles.emptyBox]} maxLength = {15} returnKeyType="next"
-           onChangeText={(name) => this.setState({ name })}  value={this.state.name} autoFocus={true}
-           onSubmitEditing={() => this.ageInput.focus()}/>
-       <TextInput placeholder="Age" ref={(input) => { this.ageInput = input; }} placeholderTextColor="gray" transparent style={[styles.inputbox, this.state.agecss && styles.emptyBox]} keyboardType='numeric' maxLength = {2} returnKeyType="next"
-           onChangeText={(age) => this.setState( {age })}  value={this.state.age} onSubmitEditing={() => this.phoneInput.focus()} /> 
-       <TextInput placeholder="Phone No." ref={(input) => { this.phoneInput = input; }} placeholderTextColor="gray" transparent style={[styles.inputbox, this.state.phonecss && styles.emptyBox]} keyboardType='numeric' maxLength = {10} returnKeyType="next"
-          onChangeText={(phone) => this.setState({ phone })}   value={this.state.phone} onSubmitEditing={() => this.emailInput.focus()}/> 
-       <TextInput placeholder="Email" ref={(input) => { this.emailInput = input; }} placeholderTextColor="gray" transparent style={[styles.inputbox, this.state.emailcss && styles.emptyBox]} keyboardType="email-address" returnKeyType="next"
-           onChangeText={(email) => this.setState({ email })} value={this.state.email} onSubmitEditing={() => this.psdInput.focus()} />
-       <TextInput placeholder="Password" ref={(input) => { this.psdInput = input; }} placeholderTextColor="gray" secureTextEntry transparent style={[styles.inputbox, this.state.password1css && styles.emptyBox]} returnKeyType="next"
-           onChangeText={(password1) => this.setState({ password1 })} value={this.state.password1} onSubmitEditing={() => this.psd2Input.focus()} />
-       <TextInput placeholder="Confirm Password" ref={(input) => { this.psd2Input = input; }} placeholderTextColor="gray" secureTextEntry transparent style={[styles.inputbox, this.state.password2css && styles.emptyBox]} 
-           onChangeText={(password2) => this.setState({ password2 })} value={this.state.password2} returnKeyType={'go'}
-           onSubmitEditing={()=>this.signup(this.state.name,this.state.age,
-                 this.state.phone,this.state.email,this.state.password1,this.state.password2,this.state.avatarSource)} />
-
-           <View style={styles.overlay}>
-           <ActivityIndicator
-             color='gray'
-             animating={this.state.animating}
-             style={{height:this.state.hght,opacity:this.state.opac}}
-             size={100}
-           />
-     </View>
-
-            <Button rounded bordered style={styles.button} onPress={() => this.signup(this.state.name,this.state.age,
-                 this.state.phone,this.state.email,this.state.password1,this.state.password2,this.state.avatarSource)}>
-          <Text style={styles.text}>
-           SIGN UP
-          </Text>
-        </Button>
-        <Text  style={styles.text}>Already have Account ?</Text>
-        <Text style={{color:'#000099',marginBottom:10,textAlign:'center',fontSize:26}} onPress={() => navigate('Home')}>Login</Text>
-            </ScrollView>    
-        </Content>
+    //  <KeyboardAwareScrollView>
+      <Container><ScrollView>
+        <Content contentContainerStyle={{}} disableKBDismissScroll>
+        
+          <View style={styles.upper}>
+            <View style={styles.upperContent}>
+              <View style={styles.logoDiv}>
+                <ResponsiveImage source={ require('./pics/back.png') } initWidth="155" initHeight="128" style={{ alignSelf: 'center',borderRadius:10 }} />
+              <Text style={{color:'#075e54',fontSize:20}}>ChitChat</Text>
+              </View>
+              <View style={styles.welcomeDiv}>
+                <Text style={styles.welcome}> Sign Up </Text>
+              </View></View></View>
+              <View style={styles.inputDiv}>
+              <Input placeholder="Name" ref="name"  placeholderTextColor="gray" transparent style={[styles.inputbox, this.state.namecss && styles.emptyBox]} maxLength = {15} returnKeyType="next"
+                      onChangeText={(name) => this.setState({ name })}  value={this.state.name} autoFocus={true}
+                     onSubmitEditing={() => this.ageInput._root.focus()}/>
+            <Input placeholder="Age" ref={(input) => { this.ageInput = input; }} placeholderTextColor="gray" transparent style={[styles.inputbox, this.state.agecss && styles.emptyBox]} keyboardType='numeric' maxLength = {2} returnKeyType="next"
+                      onChangeText={(age) => this.setState( {age })}  value={this.state.age} onSubmitEditing={() => this.phoneInput._root.focus()} /> 
+            <Input placeholder="Phone No." ref={(input) => { this.phoneInput = input; }} placeholderTextColor="gray" transparent style={[styles.inputbox, this.state.phonecss && styles.emptyBox]} keyboardType='numeric' maxLength = {10} returnKeyType="next"
+                    onChangeText={(phone) => this.setState({ phone })}   value={this.state.phone} onSubmitEditing={() => this.emailInput._root.focus()}/> 
+            <Input placeholder="Email" ref={(input) => { this.emailInput = input; }} placeholderTextColor="gray" transparent style={[styles.inputbox, this.state.emailcss && styles.emptyBox]} keyboardType="email-address" returnKeyType="next"
+                   onChangeText={(email) => this.setState({ email })} value={this.state.email} onSubmitEditing={() => this.psdInput._root.focus()} />
+            <Input placeholder="Password" ref={(input) => { this.psdInput = input; }} placeholderTextColor="gray" secureTextEntry transparent style={[styles.inputbox, this.state.password1css && styles.emptyBox]} returnKeyType="next"
+                     onChangeText={(password1) => this.setState({ password1 })} value={this.state.password1} onSubmitEditing={() => this.psd2Input._root.focus()} />
+             <Input placeholder="Confirm Password" ref={(input) => { this.psd2Input = input; }} placeholderTextColor="gray" secureTextEntry transparent style={[styles.inputbox, this.state.password2css && styles.emptyBox]} 
+                     onChangeText={(password2) => this.setState({ password2 })} value={this.state.password2} returnKeyType={'go'}
+                   onSubmitEditing={()=>this.signup(this.state.name,this.state.age,
+                   this.state.phone,this.state.email,this.state.password1,this.state.password2,this.state.avatarSource)} />
+              </View>
+              <View style={styles.buttonDiv}>
+                <Button rounded bordered onPress={() => { this.signup(this.state.name,this.state.age,this.state.phone,this.state.email,this.state.password1,this.state.password2,this.state.avatarSource)}} style={styles.button}>
+                  <Text style={styles.buttonText}>
+                   SIGN UP
+                </Text>
+                </Button>
+              </View>
+              <View style={styles.overlay}>
+         <ActivityIndicator  color='#075e54' animating={this.state.animating} size={70}
+         style={{ height:this.state.hght,opacity:this.state.opac,}} 
+          // style={{ height:100,opacity:1}} 
+            />
+       </View>
+     <View style={styles.lower} >
+            <Text style={styles.bottomText} onPress={ ()=>{ navigate('Home')}}>Already have account ? LOGIN!</Text>
+        </View >
+        </Content></ScrollView>       
       </Container>
-    );
+      // </KeyboardAwareScrollView>   
+  );
   }
  }
-var styles = StyleSheet.create({
-  container: {
-    borderRadius: 4,
-    borderWidth: 0,
-    borderColor: 'white',
-
-  }, 
-  text: {
-    textAlign: "center",
-    color:'white',
-      },
-  title: {
-    fontWeight: 'bold', fontFamily: "vincHand",
-    fontSize: 30,
-    textAlign: "center",
-    marginTop: 25,
+ const styles = StyleSheet.create({
+  
+  upper: {
+    //flex: 8,
+    height:height*0.35,
+    alignItems: 'center',
+    flexDirection:'row',
+    
+  },
+  upperContent: {
+    flexDirection: 'column',
+    width:'100%'
+  },
+  logoDiv: {
+    flex: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 10,
+   // backgroundColor:'#075e54',
+  },
+  welcomeDiv: {
+    flex: 3,
+    justifyContent: 'center',
+    // backgroundColor: '#00f'
+  },
+  inputDiv: {
+  // flex: 5,
+   height:280,
+   maxHeight:300,
+   minHeight:250,
+    justifyContent: 'center',
+   // backgroundColor:'red',
+  },
+  buttonDiv: {
+   // flex: 3,
+   height:height*0.2,
+    justifyContent: 'center',
+   // backgroundColor: 'red'
+  },
+  lower: {
+    //flex: 1,
+    height:height*0.1,
+   // backgroundColor: 'red'
+  },
+  welcome: {
+    fontSize: 26,
+    textAlign: 'center',
+    fontWeight: '300',
+    color: '#364354'
+  },
+  overlay: { 
+    height:65,
+    width:70,  
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.4,
+    shadowRadius: 2,
+    position: "absolute",
+    elevation: 4,
+     top: '18%',
+    // right: 0,
+    // bottom: 350,
+    // left: 0,
+     flexDirection: 'column',
+    // backgroundColor:'blue'
+       //justifyContent: 'center',
+    // alignItems: 'center',
+  },
+  button: {
+    // padding:80,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    borderColor: '#075e54',
+    backgroundColor:'#075e54',
+    width: '60%',
+    height: 50
+  },
+  buttonText:{
+    color: 'white',
+    fontSize: 16
+  },
+  inputbox: {
+    color: '#50616F',
+    width: '100%',
+    borderColor: '#E7ECEC',
+    borderWidth: 1,
+    backgroundColor: 'white',
+    fontSize: 16,
+    height: 30,
+    paddingLeft: 30
   },
   emptyBox: {
-    borderColor: 'red',
-   borderWidth: 2.0,
-  },
-  view: {
-    textAlign: "center",
-    color : "rgb(3, 7, 33)",
-    fontWeight:'bold',
-     },
-     inputbox: {
-      //textAlign: "center",
-      color:'white',
-      fontWeight:'bold',
-      fontSize:20, 
-      padding:10,
+      borderColor: 'red',
+     borderWidth:1
+     // backgroundColor: 'red',
     },
-    overlay: {
-      flex: 1,
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
-      position: 'absolute',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-    } ,
-     Image: {
-       flex:1,
-       alignSelf:'center',  
-       width:'100%' ,
-       height:'100%',
-      },
-      button :{
-        fontWeight:'bold',
-        margin:10,
-     color:'white',
-     alignSelf:'center',
-     justifyContent:'center',
-     borderColor:'white',
-     marginTop:10,
-     borderWidth:2,
-      },
-      text:{
-        fontWeight:'bold',
-       color:'white',
-       alignSelf:'center',
-       justifyContent:'center',
-       borderColor:'white',
-       fontSize:20,
-      }
-    });
+  text: {
+    alignSelf: 'center',
+    fontSize: 17,
+    color: '#364354'
+  },
+  bottomText:{
+    color: '#364354',
+    fontSize: 16,
+    fontWeight: '300',
+    alignSelf: 'center',
+  }
+});
     

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet,ActivityIndicator,BackHandler,Button, Modal,TextInput} from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet,ActivityIndicator,BackHandler,Button,
+   Modal,TextInput,Dimensions} from 'react-native';
 import {Right,Left,Spinner} from 'native-base';
 import ParallaxView from 'react-native-parallax-view';
 import RNFetchBlob from 'react-native-fetch-blob';
@@ -12,6 +13,7 @@ const fs = RNFetchBlob.fs
 window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
 window.Blob = Blob
  var URL;
+ const { width, height } = Dimensions.get('window');
 export default class UserProfileScreen extends React.Component {
     static navigationOptions = ({ navigation }) => ({
     header:null,
@@ -86,7 +88,7 @@ export default class UserProfileScreen extends React.Component {
                   .then(url => {console.log(url),this.setState({avatarSource: url}) },
                   
 setTimeout(() => firebaseApp.database().ref('user/'+userId).update({ ImageURL: this.state.avatarSource }), 9000))                
-                
+this.setState({hght:0,opac:0})
           .catch(error => console.log(error))
                 }          
               });   }
@@ -107,7 +109,7 @@ setTimeout(() => firebaseApp.database().ref('user/'+userId).update({ ImageURL: t
                     })
                     .then(() => {
                       uploadBlob.close();
-                      this.setState({hght:0,opac:0});
+                      //this.setState({hght:0,opac:0});
                       return imageRef.getDownloadURL()
                     })
                     .then((url) => {
@@ -172,7 +174,7 @@ setTimeout(() => firebaseApp.database().ref('user/'+userId).update({ ImageURL: t
         return(            
   <ParallaxView 
     backgroundSource={{ uri:this.state.avatarSource}}
-    windowHeight={400}
+    windowHeight={height*0.7}
     header={(
       <View>
  <View style={styles.overlay}>
@@ -183,11 +185,12 @@ setTimeout(() => firebaseApp.database().ref('user/'+userId).update({ ImageURL: t
         size={100}
       />
 </View>
-        <TouchableOpacity style={styles.header} onPress={() => this.uploadPhoto(userId)}>
-          <Icon name="edit" color="#075e54" size={33}
-            style={{ paddingLeft: 10,paddingRight:20,paddingTop:10}}
-          />
-        </TouchableOpacity>
+     <View style={{flexDirection:'row'}}>
+       <Icon name='arrow-back' size={40} style={styles.backicon} onPress={() => this.props.navigation.goBack() } />
+       <TouchableOpacity style={styles.editbutton} onPress={() => this.uploadPhoto(userId)}>
+          <Icon name="edit" color="#075e54" size={33}/>
+       </TouchableOpacity>
+     </View>
         <Text style={styles.title}>{name}</Text>        
       </View>
     )}  scrollableViewStyle={{ backgroundColor: '#ece5dd' }} >
@@ -240,11 +243,14 @@ setTimeout(() => firebaseApp.database().ref('user/'+userId).update({ ImageURL: t
 }
 }
 const styles = StyleSheet.create({
-  header: {
-    height: 60,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+  editbutton: {
+ justifyContent: 'flex-end',
+  alignItems: 'flex-end',
+  },
+  backicon:{
+    flex:2,
+    color:'black',
+    //alignSelf:'flex-start'
   },
   title: {
     fontSize: 25,

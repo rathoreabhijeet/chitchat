@@ -41,15 +41,33 @@ export default class MainScreen extends React.Component {
       }
     }
 
-    componentDidMount() {
-      BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-      this.setState({
-        height1:'auto',
-        opacity1:1,
-        buttonTrue:true
-      })
-  }
- 
+  //   componentDidMount() {
+  //     BackHandler.addEventListener('hardwareBackPress', this.onBackPress.bind(this));
+  //     this.setState({
+  //       height1:'auto',
+  //       opacity1:1,
+  //       buttonTrue:true
+  //     })
+  // }
+  // componentWillUnmount() {
+  //   BackHandler.removeEventListener('hardwareBackPress', this.onBackPress.bind(this));
+  //   this.setState({
+  //     count:0,
+  //   })
+  //   }
+  //   onBackPress(){
+  //   if(this.state.count==0){
+  //   ToastAndroid.showWithGravity('Press Back again to exit', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+  //   this.setState({
+  //     count:1
+  //   });
+    // setTimeout(() => {this.setState({count:0})}, 3000);
+    // return true; }
+    // else{
+    // BackHandler.exitApp()
+    // return false;
+    // }
+    // }
     render() {
         const { navigate } = this.props.navigation;
         const {goBack} = this.props.navigation;
