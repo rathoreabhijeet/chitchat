@@ -12,7 +12,17 @@ export default class ProfileScreen extends React.Component {
       this.state={
         status:''
       }
+    }
 
+    componentDidMount(){
+      BackHandler.addEventListener('hardwareBackPress', this.onBackPress.bind(this));
+          }
+    componentWillUnmount() {
+      BackHandler.removeEventListener('hardwareBackPress', this.onBackPress.bind(this));
+    }
+    onBackPress(){ 
+      this.props.navigation.goBack();
+     return true;    
     }
     render()
     {
@@ -25,7 +35,7 @@ export default class ProfileScreen extends React.Component {
     header={(
       <View>
         <View>
-      <Icon name='arrow-back' size={40} style={styles.backicon} onPress={() => this.props.navigation.goBack() } />
+      <Icon name='arrow-back' size={30} style={styles.backicon} onPress={() => this.props.navigation.goBack() } />
         </View>
         <Text style={styles.title}>{user.name}</Text>
       </View>

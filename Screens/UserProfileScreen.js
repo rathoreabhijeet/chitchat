@@ -53,6 +53,16 @@ export default class UserProfileScreen extends React.Component {
      this.state.avatarSource=URL;
      this.state.status=status;
     }
+    componentDidMount(){
+      BackHandler.addEventListener('hardwareBackPress', this.onBackPress.bind(this));
+          }
+    componentWillUnmount() {
+      BackHandler.removeEventListener('hardwareBackPress', this.onBackPress.bind(this));
+    }
+    onBackPress(){ 
+      this.props.navigation.goBack();
+     //return true;    
+    }
  
     uploadPhoto(userId){ //function to upload profile photo
       var pic;
@@ -65,7 +75,7 @@ export default class UserProfileScreen extends React.Component {
       };
     ImagePicker.showImagePicker(options, (response) => { 
                 console.log('Response = ', response);
-                this.setState({hght:80,
+                this.setState({hght:100,
                   opac:1});
                 if (response.didCancel) {
                   this.setState({hght:0,opac:0});
@@ -85,10 +95,16 @@ export default class UserProfileScreen extends React.Component {
                     file:response.fileName,
                   });
                   this.uploadImage(response.uri,response.fileName)
-                  .then(url => {console.log(url),this.setState({avatarSource: url}) },
+                  .then(url => {
+                    console.log(url),this.setState({avatarSource: url}) 
+                    setTimeout(() => firebaseApp.database().ref('user/'+userId).update({ ImageURL: this.state.avatarSource }), 8000)
+                  },
+                  (err)=>{
+                    console.log(err);
+                  })
                   
-setTimeout(() => firebaseApp.database().ref('user/'+userId).update({ ImageURL: this.state.avatarSource }), 9000))                
-this.setState({hght:0,opac:0})
+        // setTimeout(() => firebaseApp.database().ref('user/'+userId).update({ ImageURL: this.state.avatarSource }), 9000))                
+                
           .catch(error => console.log(error))
                 }          
               });   }
@@ -109,7 +125,7 @@ this.setState({hght:0,opac:0})
                     })
                     .then(() => {
                       uploadBlob.close();
-                      //this.setState({hght:0,opac:0});
+                      this.setState({hght:0,opac:0});
                       return imageRef.getDownloadURL()
                     })
                     .then((url) => {
@@ -154,9 +170,7 @@ this.setState({hght:0,opac:0})
       var userId = firebaseApp.auth().currentUser.uid;
 
     }        
-    componentDidMount(){
-
-    }
+   
     render()
     {  var name;
       var Phone_No;
@@ -186,7 +200,7 @@ this.setState({hght:0,opac:0})
       />
 </View>
      <View style={{flexDirection:'row'}}>
-       <Icon name='arrow-back' size={40} style={styles.backicon} onPress={() => this.props.navigation.goBack() } />
+       <Icon name='arrow-back' size={30} style={styles.backicon} onPress={() => this.props.navigation.goBack() } />
        <TouchableOpacity style={styles.editbutton} onPress={() => this.uploadPhoto(userId)}>
           <Icon name="edit" color="#075e54" size={33}/>
        </TouchableOpacity>

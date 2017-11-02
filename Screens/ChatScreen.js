@@ -157,8 +157,9 @@ render() {
         <ListView dataSource={this.state.dataSource}
 renderRow={this._renderItem.bind(this)} enableEmptySections={true} style={{ marginTop:5,}}>                      
           </ListView>
-         </ScrollView>        
+         </ScrollView>
         </Content>
+        
         <Fab
             active={true}
             direction="up"

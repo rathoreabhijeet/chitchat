@@ -137,7 +137,16 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
   componentDidMount() {
     this.listenForItems(this.chatRef);
     firebaseApp.database().ref('Unread/'+senderId+'/'+receiverId+'/').remove();
+    BackHandler.addEventListener('hardwareBackPress', this.onBackPress.bind(this));
   }
+
+// componentWillUnmount() {
+//   BackHandler.removeEventListener('hardwareBackPress');
+// }
+onBackPress(){ 
+  this.props.navigation.goBack();
+ return true;    
+}
 
   _renderItem(msg)
    {             //display messages between two users
@@ -186,7 +195,7 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
       <Container style={styles.container} >
          
            <Header style={styles.header}>
-             <Icon name='arrow-back' size={40} style={styles.icon} onPress={() => this.props.navigation.goBack() } />          
+             <Icon name='arrow-back' size={28} style={styles.icon} onPress={() => this.props.navigation.goBack() } />          
            <Left>
            <TouchableOpacity style={styles.photo} onPress={() =>navigate('profile',{status:user.status,name:user.username,phone:user.phone,url:user.url})}>
 <Thumbnail source={{ uri: user.url }} /></TouchableOpacity>
@@ -214,13 +223,13 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
            </Content>        
 
     <Footer style={{backgroundColor:'gray',}} >
-               <Item regular style={{width:'100%',backgroundColor:'white',}}>              
- <Input multiline = {true}  numberOfLines = {2} style={{ }}
+               <Item regular style={{width:'100%',backgroundColor:'white',flexDirection:'row',flex:1}}>              
+ <Input multiline = {true}  numberOfLines = {2} style={{flex:8, }}
    onChangeText={(message) => this.setState({ message })}   value={this.state.message} />
-   
-         <Button style={{ backgroundColor: '#075e54',width:45,borderRadius:50,paddingLeft:13,margin:4}} iconRight onPress={() => this.sendMessage(this.state.message,date,Ukey,Rkey)}>
-                     <Icon name="send" color="white" size={25}/>
-                   </Button>
+       <View style={styles.sendButtonDiv}>   
+         <Icon name="send" color="#075e54" size={35} 
+          onPress={() => this.sendMessage(this.state.message,date,Ukey,Rkey)}/>
+          </View>
                </Item>
             </Footer> 
       </Container>
@@ -304,5 +313,13 @@ alignItems:'center'
         color: '#202020',
         fontWeight: '600',
       },
+     
+    sendButtonDiv:{
+      // backgroundColor: '#075e54',
+       flex:2,
+       justifyContent:'center',
+       alignItems:'center',
+       height:'100%',
+  }
   });
 
