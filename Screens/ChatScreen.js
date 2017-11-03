@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Container, Header, Content, List,Title, ListItem,Segment,Button, Left, Body,Footer, 
   Right, Thumbnail, Text,Badge,Fab } from 'native-base';
-import {  AppRegistry, StyleSheet,ListView,ToastAndroid,Dimensions,TouchableOpacity,ScrollView} from 'react-native';
+import {  AppRegistry, StyleSheet,ListView,BackHandler,ToastAndroid,Dimensions,TouchableOpacity,
+  ScrollView} from 'react-native';
 import firebaseApp from './Firebase';
 import MessageScreen from './MessageScreen';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -103,7 +104,7 @@ listenForItems(userRef,ChatwithRef) { // function to get list of users, current 
 componentDidMount() {  //on pageload call the function to get list of users in chatwith table
   this.listenForItems(this.userRef,this.ChatwithRef);
   PushNotification.cancelAllLocalNotifications()
-}
+ }
 
 _renderItem(Userdata) {  //function to dispaly details of particular user in listView
   const { navigate } = this.props.navigation;

@@ -52,18 +52,21 @@ export default class UserProfileScreen extends React.Component {
      });
      this.state.avatarSource=URL;
      this.state.status=status;
-    }
-    componentDidMount(){
-      BackHandler.addEventListener('hardwareBackPress', this.onBackPress.bind(this));
-          }
-    componentWillUnmount() {
-      BackHandler.removeEventListener('hardwareBackPress', this.onBackPress.bind(this));
-    }
-    onBackPress(){ 
-      this.props.navigation.goBack();
-     //return true;    
-    }
- 
+       this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
+}
+
+componentWillMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+}
+
+componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+}
+
+handleBackButtonClick() {
+    this.props.navigation.goBack(null);
+    return true;
+} 
     uploadPhoto(userId){ //function to upload profile photo
       var pic;
       var options = {
@@ -200,7 +203,7 @@ export default class UserProfileScreen extends React.Component {
       />
 </View>
      <View style={{flexDirection:'row'}}>
-       <Icon name='arrow-back' size={30} style={styles.backicon} onPress={() => this.props.navigation.goBack() } />
+       <Icon name='arrow-back' size={30} style={styles.backicon} onPress={() =>this.props.navigation.goBack() } />
        <TouchableOpacity style={styles.editbutton} onPress={() => this.uploadPhoto(userId)}>
           <Icon name="edit" color="#075e54" size={33}/>
        </TouchableOpacity>

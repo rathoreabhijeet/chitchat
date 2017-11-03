@@ -20,6 +20,20 @@ export default class ContactScreen extends Component {
     })
   }
   this.userRef =firebaseApp.database().ref().child('user');
+  this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
+}
+
+componentWillMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+}
+
+componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+}
+
+handleBackButtonClick() {
+    this.props.navigation.goBack(null);
+    return true;
 }
 
 listenForItems(userRef) { //get the list of all the users signuped
@@ -78,13 +92,6 @@ var styles = StyleSheet.create({
     borderWidth: 0,
     borderColor: 'white',
     backgroundColor:'white',   
-  },
-  title: {
-    fontWeight: 'bold',fontFamily: "vincHand",
-    fontSize: 30,
-    textAlign: "center",
-    marginTop:25,
-    
   },
   listview: {
     flex: 1,

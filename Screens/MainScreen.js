@@ -40,19 +40,10 @@ export default class MainScreen extends React.Component {
         searchButton:false
       }
     }
-  //   componentDidMount() {
-  //     BackHandler.addEventListener('hardwareBackPress', this.onBackPress.bind(this));
-  // }
-  // componentWillUnmount() {
-  //   BackHandler.removeEventListener('hardwareBackPress',  this.onBackPress.bind(this));    
-  // }
-  // onBackPress(){ 
-  //  BackHandler.exitApp()
-  //  return true;    
-  // }
-    componentDidMount() {
-      BackHandler.addEventListener('hardwareBackPress', this.onBackPress.bind(this));
-  }
+ 
+   componentDidMount() {
+     BackHandler.addEventListener('hardwareBackPress', this.onBackPress.bind(this));
+ }
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackPress.bind(this));
     this.setState({
@@ -65,7 +56,7 @@ export default class MainScreen extends React.Component {
     this.setState({
       count:1
     });
-    setTimeout(() => {this.setState({count:0})}, 3000);
+    setTimeout(() => {this.setState({count:0})}, 2000);
     return true; }
     else{
     BackHandler.exitApp()

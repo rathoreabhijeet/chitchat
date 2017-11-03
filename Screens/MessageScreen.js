@@ -46,8 +46,22 @@ export default class MessageScreen extends React.Component {
             this.state.keyDb=keyDb;
         }
     this.chatRef =firebaseApp.database().ref().child('ChatMessages/'+keyDb+'/');
-  }//constructor closed
+ // }//constructor closed
+  this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
+}
 
+componentWillMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+}
+
+componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+}
+
+handleBackButtonClick() {
+    this.props.navigation.goBack(null);
+    return true;
+}
 
   sendMessage(message,date,Ukey,Rkey) { 
     this.setState({
@@ -137,16 +151,18 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
   componentDidMount() {
     this.listenForItems(this.chatRef);
     firebaseApp.database().ref('Unread/'+senderId+'/'+receiverId+'/').remove();
-    BackHandler.addEventListener('hardwareBackPress', this.onBackPress.bind(this));
+    //BackHandler.addEventListener('hardwareBackPress', this.onBackPress.bind(this));
   }
 
 // componentWillUnmount() {
-//   BackHandler.removeEventListener('hardwareBackPress');
+//   BackHandler.removeEventListener('hardwareBackPress', this.onBackPress.bind(this));
 // }
-onBackPress(){ 
-  this.props.navigation.goBack();
- return true;    
-}
+//onBackPress(){ 
+  //this.props.navigation.goBack();
+ // BackHandler.removeEventListener('hardwareBackPress');
+ // this.props.navigation.navigate('Main');
+ //return true;    
+//}
 
   _renderItem(msg)
    {             //display messages between two users
@@ -154,27 +170,23 @@ onBackPress(){
     if(msg.sender == userId)
     {
       return (  //messages send by current user(self)
-     <AutoScroll>
     <View style={styles.rightMsg} >
     <View style={styles.rightBlock} >   
       <Text style={styles.rightTxt}>{msg.message}</Text>
        <Right><Text note style={{color:'grey'}}>{msg.date.substring(16,21)}</Text></Right>                  
     </View>
-    </View></AutoScroll>
+    </View>
         );
     }
     else    {
       return (  // messages send by other person (receiver)
-      <AutoScroll>
-        <View style={styles.eachMsg}>
+     <View style={styles.eachMsg}>
          <View style={styles.msgBlock}>
               <Text style={styles.msgTxt}>{msg.message}</Text>
           <Text note style={{color:'grey'}}>{msg.date.substring(16,21)}</Text>
       </View>
-     </View></AutoScroll>
+     </View>
     );}
-      
-  
   }
 
   render() {

@@ -12,18 +12,26 @@ export default class ProfileScreen extends React.Component {
       this.state={
         status:''
       }
+      this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
     }
-
-    componentDidMount(){
-      BackHandler.addEventListener('hardwareBackPress', this.onBackPress.bind(this));
-          }
+    
+    componentWillMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+    
     componentWillUnmount() {
-      BackHandler.removeEventListener('hardwareBackPress', this.onBackPress.bind(this));
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
-    onBackPress(){ 
-      this.props.navigation.goBack();
-     return true;    
+    
+    handleBackButtonClick() {
+        this.props.navigation.goBack(null);
+        return true;
     }
+   /// componentDidMount(){
+     // BackHandler.addEventListener('hardwareBackPress', this.onBackPress.bind(this));
+    //      }
+  
+      
     render()
     {
       var date = new Date().toString();
@@ -35,7 +43,7 @@ export default class ProfileScreen extends React.Component {
     header={(
       <View>
         <View>
-      <Icon name='arrow-back' size={30} style={styles.backicon} onPress={() => this.props.navigation.goBack() } />
+      <Icon name='arrow-back' size={30} style={styles.backicon} onPress={() =>this.props.navigation.goBack() } />
         </View>
         <Text style={styles.title}>{user.name}</Text>
       </View>
