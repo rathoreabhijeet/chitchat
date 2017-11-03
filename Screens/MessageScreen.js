@@ -208,16 +208,11 @@ if(Rkey.toLowerCase()>=Ukey.toLowerCase()){
          
            <Header style={styles.header}>
              <Icon name='arrow-back' size={28} style={styles.icon} onPress={() => this.props.navigation.goBack() } />          
-           <Left>
-           <TouchableOpacity style={styles.photo} onPress={() =>navigate('profile',{status:user.status,name:user.username,phone:user.phone,url:user.url})}>
-<Thumbnail source={{ uri: user.url }} /></TouchableOpacity>
-</Left>
-<TouchableOpacity style={styles.Username} onPress={() =>navigate('profile',{status:user.status,name:user.username,phone:user.phone,url:user.url})}>
-
-<Body><Text style={{backgroundColor:"#075e54",fontSize:25,color:"#fff",marginTop:12}}>{user.username}</Text></Body>
-</TouchableOpacity>
-        <Right>
-          </Right>
+          <TouchableOpacity style={styles.photo} onPress={() =>navigate('profile',{status:user.status,name:user.username,phone:user.phone,url:user.url})}>
+               <Thumbnail source={{ uri: user.url }} /></TouchableOpacity>
+           <TouchableOpacity style={styles.Username} onPress={() =>navigate('profile',{status:user.status,name:user.username,phone:user.phone,url:user.url})}>
+           <Text style={{fontSize:20,color:"#fff",marginLeft:1}}>{user.username}</Text>
+           </TouchableOpacity>
           </Header>
           <Content >
             <ScrollView  >         
@@ -256,23 +251,24 @@ var styles = StyleSheet.create({
     },
     header:{
 backgroundColor:"#075e54",
-fontSize:25,
-color:"#fff",
+//fontSize:25,
+//color:"#fff",
 height:65,
 flexDirection:'row',
 justifyContent:'center',
 alignItems:'center'
     },
     icon:{
-      flex:2,
-      color:'white'
+      flex:1,
+      color:'white',
+      alignSelf:'center'
     },
     photo:{
-      flex:3,
+      flex:2,
       alignSelf:'center'
     },
     Username:{
-      flex:5
+      flex:7
     },
     title: {
       fontWeight: 'bold',fontFamily: "vincHand",
