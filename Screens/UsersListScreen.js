@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Container, Header, Content, List,Title,Icon, ListItem,Segment,Button, Left, Body, 
-  Right, Thumbnail, Text } from 'native-base';
+  Right, Thumbnail, Text,View } from 'native-base';
 import {  AppRegistry, StyleSheet,ListView,BackHandler,ToastAndroid,Dimensions} from 'react-native';
 import firebaseApp from './Firebase';
 import MessageScreen from './MessageScreen';
 const { width, height } = Dimensions.get('window');
-export default class ContactScreen extends Component {
+export default class UsersListScreen extends Component {
   static navigationOptions = {
     title: 'Chats',
     header :null,
@@ -20,6 +20,21 @@ export default class ContactScreen extends Component {
     })
   }
   this.userRef =firebaseApp.database().ref().child('user');
+  this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
+}
+
+componentWillMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+}
+
+componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+}
+
+handleBackButtonClick() {
+   this.props.navigation.goBack(null);
+   //this.props.navigation.navigate('Main');
+    return true;
 }
 
 listenForItems(userRef) { //get the list of all the users signuped
@@ -62,6 +77,12 @@ _renderItem(Userdata) { //function to display details of each user in contact li
   render() {
     return (
       <Container style={styles.container}>
+           <Header style={styles.header}>
+             <Icon name='arrow-back' size={28} style={styles.icon} onPress={() => this.props.navigation.goBack() } />          
+         <View style={styles.title}>
+          <Text style={{fontSize:20,color:"#fff"}}>Select Contact</Text>
+          </View>
+       </Header>
   
         <Content style={styles.container}>
         <ListView dataSource={this.state.dataSource}
@@ -75,10 +96,27 @@ renderRow={this._renderItem.bind(this)} enableEmptySections={true} style={styles
 var styles = StyleSheet.create({
   container: {
     borderRadius: 4,
-    borderWidth: 0,
+    borderWidth: 0, 
     borderColor: 'white',
     backgroundColor:'white',   
   },
+  header:{
+    backgroundColor:"#075e54",
+    height:65,
+    flexDirection:'row',
+    justifyContent:'center',
+    alignItems:'center'
+        },
+        title:{
+flex:6,
+justifyContent:'center',
+alignItems:'center',
+        },
+        icon:{
+          flex:1,
+          color:'white',
+          alignSelf:'center'
+        },
   listview: {
     flex: 1,
     marginTop:5,

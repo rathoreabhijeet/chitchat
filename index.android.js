@@ -11,6 +11,7 @@ import ContactScreen from './Screens/ContactScreen'
 import MessageScreen from './Screens/MessageScreen';
 import ProfileScreen from './Screens/ProfileScreen';
 import UserProfileScreen from './Screens/UserProfileScreen';
+import UsersListScreen from './Screens/UsersListScreen';
 import firebaseApp from './Screens/Firebase';
 
 class FirstScreen extends React.Component {  
@@ -70,6 +71,7 @@ const ChitChat = StackNavigator({
  Message:{screen:MessageScreen},
  profile:{screen: ProfileScreen},
  uprofile:{screen: UserProfileScreen},
- contact:{screen: ContactScreen}
+ contact:{screen: ContactScreen},
+ userslist:{screen: UsersListScreen},
 }); 
 AppRegistry.registerComponent('ChitChat', () => ChitChat);

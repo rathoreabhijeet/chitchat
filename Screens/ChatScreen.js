@@ -167,7 +167,7 @@ renderRow={this._renderItem.bind(this)} enableEmptySections={true} style={{ marg
             containerStyle={{ }}
             style={{ backgroundColor: '#075e54' }}
             position="bottomRight"
-            onPress={() =>navigate('contact')}>
+            onPress={() =>navigate('userslist')}>
             <Icon name="chat" color="white" size={35}/></Fab>
       </Container>
     );
